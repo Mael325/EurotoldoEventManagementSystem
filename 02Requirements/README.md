@@ -6,4 +6,4 @@ Links to the working Google Docs will be added here.
 
 ## Working Document
 
-[Project Requirements — Google Docs](PEGA_AQUI_EL_ENLACE)
+[Project Requirements — Google Docs](https://docs.google.com/document/d/1a3mEpFNz5MSbhbv-JTYRHOfMvuIv79Rtk3lotyyil8U/edit?usp=sharing)
