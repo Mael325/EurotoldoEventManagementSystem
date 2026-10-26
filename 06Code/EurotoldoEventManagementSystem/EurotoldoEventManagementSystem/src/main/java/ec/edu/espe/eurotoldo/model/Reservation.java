@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  *
- * @author Dylan Cumbajin, MosQ, @ESPE
+ * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
 class Reservation {
     

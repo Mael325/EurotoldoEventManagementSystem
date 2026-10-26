@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author Dylan Cumbajin, MosQ, @ESPE
+ * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
 public class EquipmentFileManager {
 

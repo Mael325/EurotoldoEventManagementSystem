@@ -2,7 +2,7 @@ package ec.edu.espe.eurotoldo.model;
 
 /**
  *
- * @author Juan Alvarez, MosQ, @ESPE
+ * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
 public class Customer {
     

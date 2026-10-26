@@ -3,7 +3,7 @@ package ec.edu.espe.eurotoldo.model;
 
 /**
  *
- * @author Anthony Arevalo, MosQ ,@ESPE
+ * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
 public class Category {
     private int id;

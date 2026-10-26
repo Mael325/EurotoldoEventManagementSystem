@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  *
- * @author Anthony Arevalo, MosQ ,@ESPE
+ * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
 public class EventFileManager {
      private final Path filePath = Path.of("events.json");

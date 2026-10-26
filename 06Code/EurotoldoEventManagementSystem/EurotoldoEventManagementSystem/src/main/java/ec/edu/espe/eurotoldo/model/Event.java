@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 /**
  *
- * @author Juan Alvarez, MosQ, @ESPE
+ * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
 public class Event {
     

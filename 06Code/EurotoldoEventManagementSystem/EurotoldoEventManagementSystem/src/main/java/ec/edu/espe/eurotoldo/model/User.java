@@ -2,7 +2,7 @@ package ec.edu.espe.eurotoldo.model;
 
 /**
  *
- * @author Dylan Cumbajin, MosQ, @ESPE
+ * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
 class User {
     

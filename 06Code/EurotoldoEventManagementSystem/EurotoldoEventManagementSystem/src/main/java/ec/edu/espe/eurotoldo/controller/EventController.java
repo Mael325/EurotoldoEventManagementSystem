@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 /**
  *
- * @author Anthony Arevalo, MosQ ,@ESPE
+ * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
 public class EventController {
     

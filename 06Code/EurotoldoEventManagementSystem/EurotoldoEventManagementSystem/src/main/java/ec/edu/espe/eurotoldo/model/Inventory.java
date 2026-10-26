@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  *
- * @author Anthony Arevalo, MosQ ,@ESPE
+ * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
 public class Inventory {
     private List<Equipment> equipmentList;

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 /**
  *
- * @author Dylan Cumbajin, MosQ, @ESPE
+ * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
 public class Maintenance {
     
