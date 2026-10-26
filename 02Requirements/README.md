@@ -1,9 +1,15 @@
 # Requirements
 
-This folder contains the functional and non-functional requirements, the Product Backlog, and the Software Requirements Specification (SRS).
+This folder contains the documents that describe the requirements and expected behavior of the Eurotoldo Event Management System.
 
-Links to the working Google Docs will be added here.
+## Product Backlog
+https://docs.google.com/document/d/1a3mEpFNz5MSbhbv-JTYRHOfMvuIv79Rtk3lotyyil8U/edit?usp=sharing
 
-## Working Document
+## Software Requirements Specification (SRS)
+https://docs.google.com/document/d/1UkHIPDvcvi9ofumle-4AlJPTTHTbeIjoFzG3s9Ci5is/edit?usp=sharing
 
-[Project Requirements — Google Docs](https://docs.google.com/document/d/1a3mEpFNz5MSbhbv-JTYRHOfMvuIv79Rtk3lotyyil8U/edit?usp=sharing)
+## Client Behavior
+https://docs.google.com/document/d/1VQbGt0NS7GjPBAT0s8NJx8lGztuaWdpAMAf2XeadaMg/edit?usp=sharing
+
+## Client Interview and Evidence
+https://docs.google.com/document/d/1kqITZtgGMLEras6E7UrLEYwe-G85rYffyXfZGctwwfI/edit?usp=sharing
