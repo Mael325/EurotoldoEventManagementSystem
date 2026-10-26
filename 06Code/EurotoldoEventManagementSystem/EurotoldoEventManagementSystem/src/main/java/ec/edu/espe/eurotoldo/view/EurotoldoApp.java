@@ -1,5 +1,4 @@
 
-
 package ec.edu.espe.eurotoldo.view;
 
 import ec.edu.espe.eurotoldo.controller.EquipmentFileManager;
@@ -8,6 +7,11 @@ import ec.edu.espe.eurotoldo.model.Equipment;
 import ec.edu.espe.eurotoldo.model.Inventory;
 import java.util.List;
 import java.util.Scanner;
+import ec.edu.espe.eurotoldo.controller.EventController;
+import ec.edu.espe.eurotoldo.controller.EventFileManager;
+import ec.edu.espe.eurotoldo.model.Event;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 /**
  *
@@ -18,30 +22,55 @@ public class EurotoldoApp {
     public static void main(String[] args) {
         showMenu();
     }
-    
 
     public static void showMenu() {
         EquipmentFileManager fileManager = new EquipmentFileManager();
         List<Equipment> equipmentList = fileManager.loadEquipment();
 
         if (equipmentList == null) {
-            System.out.println("Error loading equipment.json.");
-            System.out.println("Check the file before continuing.");
+            System.out.println("Error al cargar equipment.json.");
+            System.out.println("Revisa el archivo antes de continuar.");
             return;
         }
 
         Inventory inventory = new Inventory(equipmentList);
+
+        // Cargar los eventos guardados.
+        EventController eventController = new EventController();
+        EventFileManager eventFileManager = new EventFileManager();
+        List<Event> savedEvents = eventFileManager.loadEvents();
+
+        if (savedEvents == null) {
+            System.out.println("Error al leer events.json.");
+            System.out.println("Revisa el archivo antes de continuar.");
+            return;
+        }
+
+        for (Event event : savedEvents) {
+            if (!eventController.addEvent(event)) {
+                System.out.println(
+                        "events.json contiene eventos invalidos o repetidos.");
+                System.out.println("Revisa el archivo antes de continuar.");
+                return;
+            }
+        }
+
         Scanner scanner = new Scanner(System.in);
         int option;
 
         do {
-            System.out.println("\nEUROTOLDO EVENT MANAGEMENT SYSTEM");
-            System.out.println("1. Register equipment");
-            System.out.println("2. View equipment");
-            System.out.println("3. Save equipment");
-            System.out.println("0. Exit");
+            System.out.println("\nSISTEMA DE GESTIÓN DE EVENTOS EUROTOLDO");
+            System.out.println("1. Registrar equipo");
+            System.out.println("2. Ver equipos");
+            System.out.println("3. Guardar equipos");
+            System.out.println("4. Registrar evento");
+            System.out.println("5. Ver eventos");
+            System.out.println("6. Buscar evento");
+            System.out.println("7. Actualizar evento");
+            System.out.println("8. Guardar eventos");
+            System.out.println("0. Salir");
 
-            option = readInt(scanner, "Choose an option: ");
+            option = readInt(scanner, "Elige una opción: ");
 
             switch (option) {
                 case 1:
@@ -53,19 +82,63 @@ public class EurotoldoApp {
                     break;
 
                 case 3:
-                    if (fileManager.saveEquipment(inventory.getEquipmentList())) {
-                        System.out.println("Equipment saved successfully.");
+                    if (fileManager.saveEquipment(
+                            inventory.getEquipmentList())) {
+                        System.out.println("Equipos guardados correctamente.");
                     } else {
-                        System.out.println("Could not save equipment.");
+                        System.out.println("No se pudieron guardar los equipos.");
+                    }
+                    break;
+
+                case 4:
+                    editEvent(
+                            scanner,
+                            eventController,
+                            eventFileManager,
+                            false
+                    );
+                    break;
+
+                case 5:
+                    viewEvents(eventController);
+                    break;
+
+                case 6:
+                    int eventId = readInt(scanner, "Codigo del evento: ");
+                    Event found = eventController.findEventById(eventId);
+
+                    if (found == null) {
+                        System.out.println("Evento no encontrado.");
+                    } else {
+                        System.out.println(found);
+                    }
+                    break;
+
+                case 7:
+                    editEvent(
+                            scanner,
+                            eventController,
+                            eventFileManager,
+                            true
+                    );
+                    break;
+
+                case 8:
+                    if (eventFileManager.saveEvents(
+                            eventController.getEvents())) {
+                        System.out.println("Eventos guardados.");
+                    } else {
+                        System.out.println(
+                                "No se pudieron guardar los eventos.");
                     }
                     break;
 
                 case 0:
-                    System.out.println("Goodbye!");
+                    System.out.println("¡Hasta luego!");
                     break;
 
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println("Opción inválida. Inténtalo de nuevo.");
                     break;
             }
 
@@ -79,28 +152,29 @@ public class EurotoldoApp {
             Inventory inventory,
             EquipmentFileManager fileManager) {
 
-        int id = readInt(scanner, "Equipment ID: ");
+        int id = readInt(scanner, "Código del equipo: ");
 
         if (inventory.findEquipmentById(id) != null) {
-            System.out.println("This equipment ID already exists.");
+            System.out.println("Ese código de equipo ya está registrado.");
             return;
         }
 
-        System.out.print("Equipment name: ");
+        System.out.print("Nombre del equipo: ");
         String name = scanner.nextLine();
 
-        int categoryId = readInt(scanner, "Category ID: ");
+        int categoryId = readInt(scanner, "Código de la categoría: ");
 
-        System.out.print("Category name: ");
+        System.out.print("Nombre de la categoría: ");
         String categoryName = scanner.nextLine();
 
-        System.out.print("Category description: ");
+        System.out.print("Descripción de la categoría: ");
         String categoryDescription = scanner.nextLine();
 
-        int totalQuantity = readInt(scanner, "Total quantity: ");
+        int totalQuantity = readInt(scanner, "Cantidad total: ");
 
         if (name.trim().isEmpty() || categoryName.trim().isEmpty()) {
-            System.out.println("Equipment and category names cannot be empty.");
+            System.out.println(
+                    "Los nombres del equipo y de la categoría no pueden estar vacíos.");
             return;
         }
 
@@ -119,21 +193,22 @@ public class EurotoldoApp {
 
         if (inventory.addEquipment(equipment)) {
             if (fileManager.saveEquipment(inventory.getEquipmentList())) {
-                System.out.println("Equipment registered and saved.");
+                System.out.println("Equipo registrado y guardado.");
             } else {
-                System.out.println("Equipment added only to this session.");
-                System.out.println("Saving failed. Use option 3 before exiting.");
+                System.out.println("Equipo añadido solo a esta sesión.");
+                System.out.println(
+                        "No se pudo guardar. Usa la opción 3 antes de salir.");
             }
         } else {
-            System.out.println("Could not add equipment.");
-            System.out.println("Check the ID and quantity.");
+            System.out.println("No se pudo añadir el equipo.");
+            System.out.println("Revisa el código y la cantidad.");
         }
     }
 
     public static void viewEquipment(Inventory inventory) {
 
         if (inventory.getEquipmentList().isEmpty()) {
-            System.out.println("No equipment registered.");
+            System.out.println("No hay equipos registrados.");
             return;
         }
 
@@ -142,12 +217,92 @@ public class EurotoldoApp {
         }
     }
 
+    // Mostrar todos los eventos registrados.
+    public static void viewEvents(EventController controller) {
+        List<Event> events = controller.getEvents();
+
+        if (events.isEmpty()) {
+            System.out.println("No hay eventos registrados.");
+            return;
+        }
+
+        for (Event event : events) {
+            System.out.println(event);
+        }
+    }
+
+    // Registrar o actualizar un evento y guardar la lista.
+    public static void editEvent(
+            Scanner scanner,
+            EventController controller,
+            EventFileManager fileManager,
+            boolean updating) {
+
+        int id = readInt(scanner, "Codigo del evento: ");
+        Event existing = controller.findEventById(id);
+
+        if (updating && existing == null) {
+            System.out.println("No existe un evento con ese codigo.");
+            return;
+        }
+
+        if (!updating && existing != null) {
+            System.out.println("Ese codigo ya esta registrado.");
+            return;
+        }
+
+        System.out.print("Nombre: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Ubicacion: ");
+        String location = scanner.nextLine();
+
+        try {
+            System.out.print("Fecha inicial (AAAA-MM-DD): ");
+            LocalDate start = LocalDate.parse(
+                    scanner.nextLine().trim());
+
+            System.out.print("Fecha final (AAAA-MM-DD): ");
+            LocalDate end = LocalDate.parse(
+                    scanner.nextLine().trim());
+
+            Event event = new Event(id, name, location, start, end);
+
+            boolean success;
+
+            if (updating) {
+                success = controller.updateEvent(event);
+            } else {
+                success = controller.addEvent(event);
+            }
+
+            if (!success) {
+                System.out.println(
+                        "Revisa la ubicacion y el orden de las fechas.");
+                return;
+            }
+
+            if (fileManager.saveEvents(controller.getEvents())) {
+                System.out.println("Evento guardado correctamente.");
+            } else {
+                System.out.println(
+                        "Cambio realizado solo en esta sesion.");
+                System.out.println(
+                        "Usa la opcion 8 para intentar guardar nuevamente.");
+            }
+
+        } catch (DateTimeParseException e) {
+            System.out.println(
+                    "Fecha invalida. Usa el formato AAAA-MM-DD.");
+        }
+    }
+
     public static int readInt(Scanner scanner, String message) {
 
         System.out.print(message);
 
         while (!scanner.hasNextInt()) {
-            System.out.println("Enter a valid whole number.");
+            System.out.println("Introduce un número entero válido.");
             scanner.nextLine();
             System.out.print(message);
         }
