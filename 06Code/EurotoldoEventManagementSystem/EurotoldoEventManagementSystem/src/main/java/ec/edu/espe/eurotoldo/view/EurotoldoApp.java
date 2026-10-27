@@ -17,6 +17,7 @@ import java.time.format.DateTimeParseException;
  *
  * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
+
 public class EurotoldoApp {
 
     public static void main(String[] args) {
@@ -35,7 +36,6 @@ public class EurotoldoApp {
 
         Inventory inventory = new Inventory(equipmentList);
 
-        // Cargar los eventos guardados.
         EventController eventController = new EventController();
         EventFileManager eventFileManager = new EventFileManager();
         List<Event> savedEvents = eventFileManager.loadEvents();
@@ -59,7 +59,7 @@ public class EurotoldoApp {
         int option;
 
         do {
-            System.out.println("\nSISTEMA DE GESTIÓN DE EVENTOS EUROTOLDO");
+            System.out.println("\nSISTEMA DE GESTION DE EVENTOS EUROTOLDO");
             System.out.println("1. Registrar equipo");
             System.out.println("2. Ver equipos");
             System.out.println("3. Guardar equipos");
@@ -70,7 +70,7 @@ public class EurotoldoApp {
             System.out.println("8. Guardar eventos");
             System.out.println("0. Salir");
 
-            option = readInt(scanner, "Elige una opción: ");
+            option = readInt(scanner, "Elige una opcion: ");
 
             switch (option) {
                 case 1:
@@ -134,11 +134,11 @@ public class EurotoldoApp {
                     break;
 
                 case 0:
-                    System.out.println("¡Hasta luego!");
+                    System.out.println("Hasta luego!");
                     break;
 
                 default:
-                    System.out.println("Opción inválida. Inténtalo de nuevo.");
+                    System.out.println("Opcion invalida. Intentalo de nuevo.");
                     break;
             }
 
@@ -152,29 +152,29 @@ public class EurotoldoApp {
             Inventory inventory,
             EquipmentFileManager fileManager) {
 
-        int id = readInt(scanner, "Código del equipo: ");
+        int id = readInt(scanner, "Codigo del equipo: ");
 
         if (inventory.findEquipmentById(id) != null) {
-            System.out.println("Ese código de equipo ya está registrado.");
+            System.out.println("Ese codigo de equipo ya esta registrado.");
             return;
         }
 
         System.out.print("Nombre del equipo: ");
         String name = scanner.nextLine();
 
-        int categoryId = readInt(scanner, "Código de la categoría: ");
+        int categoryId = readInt(scanner, "Codigo de la categoria: ");
 
-        System.out.print("Nombre de la categoría: ");
+        System.out.print("Nombre de la categoria: ");
         String categoryName = scanner.nextLine();
 
-        System.out.print("Descripción de la categoría: ");
+        System.out.print("Descripcion de la categoria: ");
         String categoryDescription = scanner.nextLine();
 
         int totalQuantity = readInt(scanner, "Cantidad total: ");
 
         if (name.trim().isEmpty() || categoryName.trim().isEmpty()) {
             System.out.println(
-                    "Los nombres del equipo y de la categoría no pueden estar vacíos.");
+                    "Los nombres del equipo y de la categoria no pueden estar vacios.");
             return;
         }
 
@@ -195,13 +195,13 @@ public class EurotoldoApp {
             if (fileManager.saveEquipment(inventory.getEquipmentList())) {
                 System.out.println("Equipo registrado y guardado.");
             } else {
-                System.out.println("Equipo añadido solo a esta sesión.");
+                System.out.println("Equipo anadido solo a esta sesion.");
                 System.out.println(
-                        "No se pudo guardar. Usa la opción 3 antes de salir.");
+                        "No se pudo guardar. Usa la opcion 3 antes de salir.");
             }
         } else {
-            System.out.println("No se pudo añadir el equipo.");
-            System.out.println("Revisa el código y la cantidad.");
+            System.out.println("No se pudo anadir el equipo.");
+            System.out.println("Revisa el codigo y la cantidad.");
         }
     }
 
@@ -302,7 +302,7 @@ public class EurotoldoApp {
         System.out.print(message);
 
         while (!scanner.hasNextInt()) {
-            System.out.println("Introduce un número entero válido.");
+            System.out.println("Introduce un numero entero valido.");
             scanner.nextLine();
             System.out.print(message);
         }

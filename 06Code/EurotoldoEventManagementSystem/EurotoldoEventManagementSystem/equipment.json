@@ -1,0 +1,32 @@
+[
+  {
+    "id": 2,
+    "name": "chair",
+    "category": {
+      "id": 1,
+      "name": "mesas",
+      "description": "50 mesas"
+    },
+    "totalQuantity": 50
+  },
+  {
+    "id": 3,
+    "name": "sillas",
+    "category": {
+      "id": 3,
+      "name": "Sillas",
+      "description": "sillas de repuesto"
+    },
+    "totalQuantity": 50
+  },
+  {
+    "id": 1,
+    "name": "Toldos rojos",
+    "category": {
+      "id": 22,
+      "name": "Toldos",
+      "description": "Rojos"
+    },
+    "totalQuantity": 5
+  }
+]

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 
 /**
  *
  * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
  */
+
 public class InventoryTest {
     
     private Inventory inventory;
@@ -59,30 +59,29 @@ public class InventoryTest {
         assertNotNull(inventory.findEquipmentById(2));
     }
 
-    // --- 4 FAILED (FALLAN EN NETBEANS) ---
 
     @Test
     public void testAddNullEquipment() {
         boolean result = inventory.addEquipment(null);
-        assertTrue(result); // Fallará en NetBeans
+        assertTrue(result); 
     }
 
     @Test
     public void testAddDuplicateIdEquipment() {
         inventory.addEquipment(new Equipment(1, "Toldo Azul", null, 10));
         boolean result = inventory.addEquipment(new Equipment(1, "Toldo Rojo", null, 5));
-        assertTrue(result); // Fallará en NetBeans
+        assertTrue(result); 
     }
 
     @Test
     public void testAddNegativeQuantityEquipment() {
         boolean result = inventory.addEquipment(new Equipment(4, "Proyector", null, -5));
-        assertTrue(result); // Fallará en NetBeans
+        assertTrue(result); 
     }
 
     @Test
     public void testFindNonExistentEquipment() {
         Equipment found = inventory.findEquipmentById(999);
-        assertNotNull(found); // Fallará en NetBeans
+        assertNotNull(found); 
     }
 }

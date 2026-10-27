@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
- */
 package ec.edu.espe.eurotoldo.controller;
 
 import ec.edu.espe.eurotoldo.model.Event;
@@ -20,9 +16,6 @@ public class EventControllerTest {
         controller = new EventController();
     }
 
-    // =========================================================================
-    // PRUEBAS CORRECTAS -> PASSED (VERDE EN NETBEANS) - 6 PRUEBAS (60%)
-    // =========================================================================
     @Test
     public void testAddEvent() {
         Event event = new Event(1, "Boda Real", "Quito Tenis",
