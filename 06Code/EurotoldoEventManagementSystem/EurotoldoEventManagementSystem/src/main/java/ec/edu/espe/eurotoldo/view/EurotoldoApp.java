@@ -2,6 +2,7 @@
 package ec.edu.espe.eurotoldo.view;
 
 import ec.edu.espe.eurotoldo.controller.EquipmentFileManager;
+import ec.edu.espe.eurotoldo.controller.CsvReportManager;
 import ec.edu.espe.eurotoldo.model.Category;
 import ec.edu.espe.eurotoldo.model.Equipment;
 import ec.edu.espe.eurotoldo.model.Inventory;
@@ -26,6 +27,7 @@ public class EurotoldoApp {
 
     public static void showMenu() {
         EquipmentFileManager fileManager = new EquipmentFileManager();
+        CsvReportManager csvReportManager = new CsvReportManager();
         List<Equipment> equipmentList = fileManager.loadEquipment();
 
         if (equipmentList == null) {
@@ -68,6 +70,7 @@ public class EurotoldoApp {
             System.out.println("6. Buscar evento");
             System.out.println("7. Actualizar evento");
             System.out.println("8. Guardar eventos");
+            System.out.println("9. Exportar inventario a CSV");
             System.out.println("0. Salir");
 
             option = readInt(scanner, "Elige una opcion: ");
@@ -130,6 +133,15 @@ public class EurotoldoApp {
                     } else {
                         System.out.println(
                                 "No se pudieron guardar los eventos.");
+                    }
+                    break;
+
+                case 9:
+                    if (csvReportManager.exportEquipmentReport(
+                            inventory.getEquipmentList(), "equipment_report.csv")) {
+                        System.out.println("Inventario exportado a equipment_report.csv.");
+                    } else {
+                        System.out.println("No se pudo exportar el inventario a CSV.");
                     }
                     break;
 
