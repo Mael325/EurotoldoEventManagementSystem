@@ -1,32 +1,42 @@
 [
   {
-    "id": 2,
-    "name": "chair",
+    "id": 1,
+    "name": "Toldo Blanco 6x6m",
     "category": {
-      "id": 1,
-      "name": "mesas",
-      "description": "50 mesas"
+      "id": 101,
+      "name": "Toldos y Carpas",
+      "description": "Toldos impermeables para eventos al aire libre"
     },
-    "totalQuantity": 50
+    "totalQuantity": 10
+  },
+  {
+    "id": 2,
+    "name": "Silla Plegable Plástica",
+    "category": {
+      "id": 102,
+      "name": "Sillería",
+      "description": "Sillas de resina blanca resistentes"
+    },
+    "totalQuantity": 150
   },
   {
     "id": 3,
-    "name": "sillas",
+    "name": "Mesa Redonda 10 Puestos",
     "category": {
-      "id": 3,
-      "name": "Sillas",
-      "description": "sillas de repuesto"
+      "id": 103,
+      "name": "Mesas",
+      "description": "Mesas plegables de madera para banquetes"
     },
-    "totalQuantity": 50
+    "totalQuantity": 20
   },
   {
-    "id": 1,
-    "name": "Toldos rojos",
+    "id": 4,
+    "name": "Reflector LED 100W",
     "category": {
-      "id": 22,
-      "name": "Toldos",
-      "description": "Rojos"
+      "id": 104,
+      "name": "Iluminación",
+      "description": "Equipos de iluminación exterior"
     },
-    "totalQuantity": 5
+    "totalQuantity": 15
   }
 ]

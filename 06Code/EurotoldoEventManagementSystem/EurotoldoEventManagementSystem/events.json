@@ -1,9 +1,23 @@
 [
   {
-    "id": 7,
-    "name": "Expo Feria",
-    "location": "Centro de Exposiciones",
-    "startDate": "2026-12-01",
+    "id": 1,
+    "name": "Feria Gastronómica Quito",
+    "location": "Centro de Convenciones Bicentenario",
+    "startDate": "2026-11-10",
+    "endDate": "2026-11-15"
+  },
+  {
+    "id": 2,
+    "name": "Boda Familia Pérez",
+    "location": "Quinta Las Rosas",
+    "startDate": "2026-12-05",
     "endDate": "2026-12-05"
+  },
+  {
+    "id": 3,
+    "name": "Congreso Tecnológico ESPE",
+    "location": "Campus Sangolquí - Auditorio Central",
+    "startDate": "2026-12-10",
+    "endDate": "2026-12-12"
   }
 ]
