@@ -5,7 +5,7 @@ import ec.edu.espe.eurotoldo.controller.CsvReportManager;
 import ec.edu.espe.eurotoldo.model.Category;
 import ec.edu.espe.eurotoldo.model.Equipment;
 import ec.edu.espe.eurotoldo.model.Inventory;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 import ec.edu.espe.eurotoldo.controller.EventController;
 import ec.edu.espe.eurotoldo.controller.EventFileManager;
@@ -26,7 +26,7 @@ public class EurotoldoApp {
     public static void showMenu() {
         EquipmentFileManager fileManager = new EquipmentFileManager();
         CsvReportManager csvReportManager = new CsvReportManager();
-        List<Equipment> equipmentList = fileManager.loadEquipment();
+        ArrayList<Equipment> equipmentList = fileManager.loadEquipment();
 
         if (equipmentList == null) {
             System.out.println("Error al cargar equipment.json.");
@@ -38,7 +38,7 @@ public class EurotoldoApp {
 
         EventController eventController = new EventController();
         EventFileManager eventFileManager = new EventFileManager();
-        List<Event> savedEvents = eventFileManager.loadEvents();
+        ArrayList<Event> savedEvents = eventFileManager.loadEvents();
 
         if (savedEvents == null) {
             System.out.println("Error al leer events.json.");
@@ -241,7 +241,7 @@ public class EurotoldoApp {
 
     // Mostrar todos los eventos registrados.
     public static void viewEvents(EventController controller) {
-        List<Event> events = controller.getEvents();
+        ArrayList<Event> events = controller.getEvents();
 
         if (events.isEmpty()) {
             System.out.println("No hay eventos registrados.");

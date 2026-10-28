@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.ArrayList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
@@ -18,7 +18,7 @@ import org.apache.commons.csv.CSVPrinter;
 
 public class CsvReportManager {
 
-    public boolean exportEquipmentReport(List<Equipment> equipmentList, String filePath) {
+    public boolean exportEquipmentReport(ArrayList<Equipment> equipmentList, String filePath) {
 
         if (equipmentList == null || filePath == null
                 || filePath.isBlank()) {

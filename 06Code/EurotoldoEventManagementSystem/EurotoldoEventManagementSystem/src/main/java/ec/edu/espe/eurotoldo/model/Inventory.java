@@ -1,6 +1,6 @@
 package ec.edu.espe.eurotoldo.model;
 
-import java.util.List;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +17,7 @@ import lombok.ToString;
 
 public class Inventory {
 
-    private List<Equipment> equipmentList;
+    private ArrayList<Equipment> equipmentList;
 
     public boolean addEquipment(Equipment equipment) {
 

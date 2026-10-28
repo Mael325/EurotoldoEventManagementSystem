@@ -1,7 +1,7 @@
 package ec.edu.espe.eurotoldo.model;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +22,5 @@ public class Reservation {
     private Event event;
     private String status;
     private LocalDate reservationDate;
-    private List<Assignment> assignments;
+    private ArrayList<Assignment> assignments;
 }

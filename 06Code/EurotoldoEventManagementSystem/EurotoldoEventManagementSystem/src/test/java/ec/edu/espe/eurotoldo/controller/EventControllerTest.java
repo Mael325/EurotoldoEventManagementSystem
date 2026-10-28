@@ -2,7 +2,7 @@ package ec.edu.espe.eurotoldo.controller;
 
 import ec.edu.espe.eurotoldo.model.Event;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,8 +60,8 @@ public class EventControllerTest {
     @Test
     public void testGetEvents() {
         controller.addEvent(new Event(5, "Aniversario", "Cumbayá", LocalDate.of(2026, 10, 1), LocalDate.of(2026, 10, 2)));
-        List<Event> list = controller.getEvents();
-        assertNotNull(list);
+        ArrayList<Event> ArrayList = controller.getEvents();
+        assertNotNull(ArrayList);
     }
 
     @Test
@@ -69,8 +69,10 @@ public class EventControllerTest {
         EventFileManager fileManager = new EventFileManager();
         Event event = new Event(7, "Expo Feria", "Centro de Exposiciones",
                 LocalDate.of(2026, 12, 1), LocalDate.of(2026, 12, 5));
-        fileManager.saveEvents(List.of(event));
-        List<Event> loadedEvents = fileManager.loadEvents();
+        ArrayList<Event> events = new ArrayList<>();
+        events.add(event);
+        fileManager.saveEvents(events);
+        ArrayList<Event> loadedEvents = fileManager.loadEvents();
         assertNotNull(loadedEvents);
     }
 

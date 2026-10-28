@@ -1,6 +1,7 @@
 package ec.edu.espe.eurotoldo.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapter;
@@ -15,8 +16,6 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  *
@@ -51,7 +50,7 @@ public class EventFileManager {
                 .create();
     }
 
-    public boolean saveEvents(List<Event> events) {
+    public boolean saveEvents(ArrayList<Event> events) {
         if (events == null) {
             return false;
         }
@@ -65,18 +64,19 @@ public class EventFileManager {
         }
     }
 
-    public List<Event> loadEvents() {
+    public ArrayList<Event> loadEvents() {
         try {
             String json = Files.readString(
                     filePath, StandardCharsets.UTF_8);
 
-            Event[] events = gson.fromJson(json, Event[].class);
+            ArrayList<Event> events = gson.fromJson(json,
+                    new TypeToken<ArrayList<Event>>() {}.getType());
 
             if (events == null) {
                 return null;
             }
 
-            return new ArrayList<>(Arrays.asList(events));
+            return events;
 
         } catch (NoSuchFileException e) {
             return new ArrayList<>();

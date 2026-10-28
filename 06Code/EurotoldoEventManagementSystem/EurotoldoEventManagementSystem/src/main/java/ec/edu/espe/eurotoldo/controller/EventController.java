@@ -2,7 +2,6 @@ package ec.edu.espe.eurotoldo.controller;
 
 import ec.edu.espe.eurotoldo.model.Event;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -10,7 +9,7 @@ import java.util.List;
  */
 public class EventController {
 
-    private final List<Event> events = new ArrayList<>();
+    private final ArrayList<Event> events = new ArrayList<>();
 
     public boolean addEvent(Event event) {
         if (!isValid(event)) {
@@ -54,7 +53,7 @@ public class EventController {
         return true;
     }
 
-    public List<Event> getEvents() {
+    public ArrayList<Event> getEvents() {
         return new ArrayList<>(events);
     }
 
