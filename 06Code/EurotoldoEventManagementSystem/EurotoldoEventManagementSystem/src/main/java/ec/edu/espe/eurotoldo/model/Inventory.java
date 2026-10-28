@@ -1,4 +1,3 @@
-
 package ec.edu.espe.eurotoldo.model;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import lombok.ToString;
 
 /**
  *
- * @author Alvarez Juan, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
  */
 @Getter
 @Setter

@@ -13,7 +13,7 @@ import org.apache.commons.csv.CSVPrinter;
 
 /**
  *
- * @author Alvarez Juan, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
  */
 
 public class CsvReportManager {

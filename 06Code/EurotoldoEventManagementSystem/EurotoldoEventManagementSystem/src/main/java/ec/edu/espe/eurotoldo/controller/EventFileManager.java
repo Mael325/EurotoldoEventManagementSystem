@@ -20,10 +20,11 @@ import java.util.List;
 
 /**
  *
- * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
  */
 public class EventFileManager {
-     private final Path filePath = Path.of("events.json");
+
+    private final Path filePath = Path.of("events.json");
     private final Gson gson;
 
     public EventFileManager() {
@@ -84,5 +85,3 @@ public class EventFileManager {
         }
     }
 }
-    
-  

@@ -1,22 +1,22 @@
 package ec.edu.espe.eurotoldo.controller;
 
-
 import ec.edu.espe.eurotoldo.model.Event;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  *
- * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
  */
 public class EventController {
-    
+
     private final List<Event> events = new ArrayList<>();
-    
-    public boolean addEvent(Event event){
-        if (!isValid(event)){
+
+    public boolean addEvent(Event event) {
+        if (!isValid(event)) {
             return false;
         }
-    
+
         if (findEventById(event.getId()) != null) {
             return false;
         }
@@ -76,4 +76,3 @@ public class EventController {
         return !event.getEndDate().isBefore(event.getStartDate());
     }
 }
-    

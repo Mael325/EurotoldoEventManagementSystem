@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
  */
 public class EquipmentFileManager {
 
@@ -51,8 +51,8 @@ public class EquipmentFileManager {
             );
 
             Gson gson = new Gson();
-            Equipment[] equipmentArray =
-                    gson.fromJson(json, Equipment[].class);
+            Equipment[] equipmentArray
+                    = gson.fromJson(json, Equipment[].class);
 
             if (equipmentArray == null) {
                 return null;

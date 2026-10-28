@@ -7,22 +7,23 @@ import org.junit.jupiter.api.BeforeEach;
 
 /**
  *
- * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
  */
 
 public class InventoryTest {
     
-    private Inventory inventory;
+  private Inventory inventory;
 
     @BeforeEach
     public void setUp() {
         inventory = new Inventory(new ArrayList<>());
     }
-    
-   @Test
+
+    @Test
     public void testAddEquipment() {
         Equipment eq = new Equipment(1, "Carpa 10x10", null, 15);
-        assertTrue(inventory.addEquipment(eq));
+        boolean result = inventory.addEquipment(eq);
+        assertTrue(result);
     }
 
     @Test
@@ -30,20 +31,23 @@ public class InventoryTest {
         Equipment eq1 = new Equipment(1, "Carpa 10x10", null, 5);
         Equipment eq2 = new Equipment(2, "Silla Plegable", null, 100);
         inventory.addEquipment(eq1);
-        assertTrue(inventory.addEquipment(eq2));
+        boolean result = inventory.addEquipment(eq2);
+        assertTrue(result);
     }
 
     @Test
     public void testFindEquipmentById() {
         Equipment eq = new Equipment(10, "Mesa Redonda", null, 20);
         inventory.addEquipment(eq);
-        assertNotNull(inventory.findEquipmentById(10));
+        Equipment found = inventory.findEquipmentById(10);
+        assertNotNull(found);
     }
 
     @Test
     public void testAddZeroQuantityEquipment() {
         Equipment eq = new Equipment(3, "Pantalla LED", null, 0);
-        assertTrue(inventory.addEquipment(eq));
+        boolean result = inventory.addEquipment(eq);
+        assertTrue(result);
     }
 
     @Test
@@ -56,9 +60,9 @@ public class InventoryTest {
     public void testFindLastEquipment() {
         inventory.addEquipment(new Equipment(1, "A1", null, 10));
         inventory.addEquipment(new Equipment(2, "A2", null, 10));
-        assertNotNull(inventory.findEquipmentById(2));
+        Equipment found = inventory.findEquipmentById(2);
+        assertNotNull(found);
     }
-
 
     @Test
     public void testAddNullEquipment() {

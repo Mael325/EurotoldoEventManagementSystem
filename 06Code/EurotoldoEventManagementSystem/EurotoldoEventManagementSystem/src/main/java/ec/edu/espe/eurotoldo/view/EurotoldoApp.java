@@ -1,4 +1,3 @@
-
 package ec.edu.espe.eurotoldo.view;
 
 import ec.edu.espe.eurotoldo.controller.EquipmentFileManager;
@@ -16,9 +15,8 @@ import java.time.format.DateTimeParseException;
 
 /**
  *
- * @author Alvarez Juan,Anthony Arévalo,Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
  */
-
 public class EurotoldoApp {
 
     public static void main(String[] args) {
