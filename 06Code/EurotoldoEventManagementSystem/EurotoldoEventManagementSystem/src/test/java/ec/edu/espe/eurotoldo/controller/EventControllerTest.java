@@ -75,33 +75,34 @@ public class EventControllerTest {
     }
 
     @Test
-    public void testAddNullEvent() {
+    public void testAddNullEvent_ShouldReturnFalse() {
         boolean result = controller.addEvent(null);
-        assertTrue(result); 
+        assertFalse(result, "Adding a null event must return false.");
     }
 
     @Test
-    public void testAddDuplicateIdEvent() {
-        Event e1 = new Event(8, "Concierto 1", "Estadio", LocalDate.of(2026, 6, 1), LocalDate.of(2026, 6, 2));
+    public void testAddDuplicateIdEvent_ShouldReturnFalse() {
+        Event e1 = new Event(8, "Concert 1", "Stadium", LocalDate.of(2026, 6, 1), LocalDate.of(2026, 6, 2));
         controller.addEvent(e1);
-        Event e2 = new Event(8, "Concierto Repetido", "Coliseo", LocalDate.of(2026, 6, 5), LocalDate.of(2026, 6, 6));
 
+        Event e2 = new Event(8, "Concert 2", "Coliseum", LocalDate.of(2026, 6, 5), LocalDate.of(2026, 6, 6));
         boolean result = controller.addEvent(e2);
-        assertTrue(result); 
+        assertFalse(result, "Adding an event with duplicate ID must return false.");
     }
 
     @Test
-    public void testAddEmptyLocationEvent() {
-        Event eEmptyLoc = new Event(9, "Reunión Privada", "   ", LocalDate.of(2026, 7, 1), LocalDate.of(2026, 7, 2));
+    public void testAddEmptyLocationEvent_ShouldReturnFalse() {
+        Event eEmptyLoc = new Event(9, "Private Meeting", "   ", 
+                LocalDate.of(2026, 7, 1), LocalDate.of(2026, 7, 2));
         boolean result = controller.addEvent(eEmptyLoc);
-        assertTrue(result); 
+        assertFalse(result, "Adding an event with empty location must return false.");
     }
 
     @Test
-    public void testAddInvalidDatesEvent() {
-        Event eBadDates = new Event(10, "Feria Libro", "Metropolitano",
+    public void testAddInvalidDatesEvent_ShouldReturnFalse() {
+        Event eBadDates = new Event(10, "Book Fair", "Metropolitan Park",
                 LocalDate.of(2026, 8, 10), LocalDate.of(2026, 8, 5));
         boolean result = controller.addEvent(eBadDates);
-        assertTrue(result); 
+        assertFalse(result, "Adding an event with endDate before startDate must return false.");
     }
 }

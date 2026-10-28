@@ -65,27 +65,27 @@ public class InventoryTest {
     }
 
     @Test
-    public void testAddNullEquipment() {
+    public void testAddNullEquipment_ShouldReturnFalse() {
         boolean result = inventory.addEquipment(null);
-        assertTrue(result); 
+        assertFalse(result, "Adding null equipment must return false.");
     }
 
     @Test
-    public void testAddDuplicateIdEquipment() {
-        inventory.addEquipment(new Equipment(1, "Toldo Azul", null, 10));
-        boolean result = inventory.addEquipment(new Equipment(1, "Toldo Rojo", null, 5));
-        assertTrue(result); 
+    public void testAddDuplicateIdEquipment_ShouldReturnFalse() {
+        inventory.addEquipment(new Equipment(1, "Blue Tent", null, 10));
+        boolean result = inventory.addEquipment(new Equipment(1, "Red Tent", null, 5));
+        assertFalse(result, "Adding duplicate equipment ID must return false.");
     }
 
     @Test
-    public void testAddNegativeQuantityEquipment() {
-        boolean result = inventory.addEquipment(new Equipment(4, "Proyector", null, -5));
-        assertTrue(result); 
+    public void testAddNegativeQuantityEquipment_ShouldReturnFalse() {
+        boolean result = inventory.addEquipment(new Equipment(4, "Projector", null, -5));
+        assertFalse(result, "Adding equipment with negative quantity must return false.");
     }
 
     @Test
-    public void testFindNonExistentEquipment() {
+    public void testFindNonExistentEquipment_ShouldReturnNull() {
         Equipment found = inventory.findEquipmentById(999);
-        assertNotNull(found); 
+        assertNull(found, "Searching non-existent ID must return null.");
     }
 }
