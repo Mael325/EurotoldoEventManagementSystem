@@ -234,12 +234,42 @@ public class EurotoldoApp {
             return;
         }
 
+        int nameWidth = 20;
+        int categoryWidth = 18;
         for (Equipment equipment : inventory.getEquipmentList()) {
-            System.out.println(equipment);
+            if (equipment.getName() != null) {
+                nameWidth = Math.max(nameWidth, equipment.getName().length());
+            }
+            if (equipment.getCategory() != null
+                    && equipment.getCategory().getName() != null) {
+                categoryWidth = Math.max(categoryWidth,
+                        equipment.getCategory().getName().length());
+            }
         }
+
+        String border = "+-------------+" + "-".repeat(nameWidth + 2)
+                + "+" + "-".repeat(categoryWidth + 2) + "+----------------+";
+        String rowFormat = "| %-11s | %-" + nameWidth + "s | %-"
+                + categoryWidth + "s | %14s |%n";
+
+        System.out.println("\nEQUIPOS REGISTRADOS");
+        System.out.println(border);
+        System.out.printf(rowFormat, "Codigo", "Equipo", "Categoria", "Cantidad total");
+        System.out.println(border);
+        for (Equipment equipment : inventory.getEquipmentList()) {
+            String name = equipment.getName() == null
+                    ? "Sin nombre" : equipment.getName();
+            String category = equipment.getCategory() == null
+                    || equipment.getCategory().getName() == null
+                    ? "Sin categoria" : equipment.getCategory().getName();
+            System.out.printf(rowFormat, equipment.getId(), name,
+                    category, equipment.getTotalQuantity());
+        }
+        System.out.println(border);
+        System.out.println("Tipos de equipo registrados: " + inventory.getEquipmentList().size());
     }
 
-    // Mostrar todos los eventos registrados.
+    // Show all recorded events.
     public static void viewEvents(EventController controller) {
         ArrayList<Event> events = controller.getEvents();
 
@@ -248,12 +278,42 @@ public class EurotoldoApp {
             return;
         }
 
+        int nameWidth = 18;
+        int locationWidth = 18;
         for (Event event : events) {
-            System.out.println(event);
+            if (event.getName() != null) {
+                nameWidth = Math.max(nameWidth, event.getName().length());
+            }
+            if (event.getLocation() != null) {
+                locationWidth = Math.max(locationWidth, event.getLocation().length());
+            }
         }
+
+        String border = "+-------------+" + "-".repeat(nameWidth + 2)
+                + "+" + "-".repeat(locationWidth + 2)
+                + "+------------+------------+---------------+";
+        String rowFormat = "| %-11s | %-" + nameWidth + "s | %-"
+                + locationWidth + "s | %-10s | %-10s | %-13s |%n";
+
+        System.out.println("\nEVENTOS REGISTRADOS");
+        System.out.println(border);
+        System.out.printf(rowFormat, "Codigo", "Evento", "Lugar",
+                "Inicio", "Fin", "Equipos");
+        System.out.println(border);
+        for (Event event : events) {
+            String name = event.getName() == null ? "Sin nombre" : event.getName();
+            String location = event.getLocation() == null ? "Sin lugar" : event.getLocation();
+            System.out.printf(rowFormat, event.getId(), name, location,
+                    event.getStartDate() == null ? "Sin fecha" : event.getStartDate(),
+                    event.getEndDate() == null ? "Sin fecha" : event.getEndDate(),
+                    "No disponible");
+        }
+        System.out.println(border);
+        System.out.println("Eventos registrados: " + events.size());
+        System.out.println("Equipos: la asignacion a eventos aun no esta conectada al menu.");
     }
 
-    // Registrar o actualizar un evento y guardar la lista.
+    
     public static void editEvent(
             Scanner scanner,
             EventController controller,

@@ -11,10 +11,10 @@
   },
   {
     "id": 2,
-    "name": "Silla Plegable Plástica",
+    "name": "Silla Plegable Plastica",
     "category": {
       "id": 102,
-      "name": "Sillería",
+      "name": "Silleria",
       "description": "Sillas de resina blanca resistentes"
     },
     "totalQuantity": 150
@@ -34,8 +34,8 @@
     "name": "Reflector LED 100W",
     "category": {
       "id": 104,
-      "name": "Iluminación",
-      "description": "Equipos de iluminación exterior"
+      "name": "Iluminacion",
+      "description": "Equipos de iluminacion exterior"
     },
     "totalQuantity": 15
   }
