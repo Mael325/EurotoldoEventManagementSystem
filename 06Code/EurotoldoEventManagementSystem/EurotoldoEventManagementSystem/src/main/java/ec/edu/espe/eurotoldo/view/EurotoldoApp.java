@@ -61,17 +61,29 @@ public class EurotoldoApp {
         int option;
 
         do {
-            System.out.println("\nSISTEMA DE GESTION DE EVENTOS EUROTOLDO");
-            System.out.println("1. Registrar equipo");
-            System.out.println("2. Ver equipos");
-            System.out.println("3. Guardar equipos");
-            System.out.println("4. Registrar evento");
-            System.out.println("5. Ver eventos");
-            System.out.println("6. Buscar evento");
-            System.out.println("7. Actualizar evento");
-            System.out.println("8. Guardar eventos");
-            System.out.println("9. Exportar inventario a CSV");
-            System.out.println("0. Salir");
+            System.out.println("\n+--------------------------------------------+");
+            System.out.println("|                 EUROTOLDO                  |");
+            System.out.println("|        SISTEMA DE GESTION DE EVENTOS       |");
+            System.out.println("+--------------------------------------------+");
+            System.out.println("| MENU PRINCIPAL - Elige una opcion          |");
+            System.out.println("+--------------------------------------------+");
+            System.out.println("| EQUIPOS                                    |");
+            System.out.println("|   [1] Registrar equipo                     |");
+            System.out.println("|   [2] Ver equipos                          |");
+            System.out.println("|   [3] Guardar equipos                      |");
+            System.out.println("+--------------------------------------------+");
+            System.out.println("| EVENTOS                                    |");
+            System.out.println("|   [4] Registrar evento                     |");
+            System.out.println("|   [5] Ver eventos                          |");
+            System.out.println("|   [6] Buscar evento                        |");
+            System.out.println("|   [7] Actualizar evento                    |");
+            System.out.println("|   [8] Guardar eventos                      |");
+            System.out.println("+--------------------------------------------+");
+            System.out.println("| REPORTES                                   |");
+            System.out.println("|   [9] Exportar inventario a CSV            |");
+            System.out.println("+--------------------------------------------+");
+            System.out.println("|   [0] Salir                                |");
+            System.out.println("+--------------------------------------------+");
 
             option = readInt(scanner, "Elige una opcion: ");
 
