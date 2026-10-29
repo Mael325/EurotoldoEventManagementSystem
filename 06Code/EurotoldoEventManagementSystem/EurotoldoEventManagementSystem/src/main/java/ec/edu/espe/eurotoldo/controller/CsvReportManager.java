@@ -1,4 +1,3 @@
-
 package ec.edu.espe.eurotoldo.controller;
 
 import ec.edu.espe.eurotoldo.model.Equipment;
