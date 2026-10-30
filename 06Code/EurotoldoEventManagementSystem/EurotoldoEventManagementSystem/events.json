@@ -1,23 +1,72 @@
 [
   {
     "id": 1,
-    "name": "Feria Gastronomica Quito",
+    "name": "Feria Gastronómica Quito",
     "location": "Centro de Convenciones Bicentenario",
     "startDate": "2026-11-10",
     "endDate": "2026-11-15"
   },
   {
     "id": 2,
-    "name": "Boda Familia Perez",
+    "name": "Boda Familia Pérez",
     "location": "Quinta Las Rosas",
     "startDate": "2026-12-05",
     "endDate": "2026-12-05"
   },
   {
     "id": 3,
-    "name": "Congreso Tecnologico ESPE",
-    "location": "Campus Sangolqui - Auditorio Central",
+    "name": "Congreso Tecnológico ESPE",
+    "location": "Campus Sangolquí - Auditorio Central",
     "startDate": "2026-12-10",
     "endDate": "2026-12-12"
+  },
+  {
+    "id": 4,
+    "name": "Festival Musical del Sol",
+    "location": "Parque Metropolitano Guanguiltagua",
+    "startDate": "2027-01-15",
+    "endDate": "2027-01-17"
+  },
+  {
+    "id": 5,
+    "name": "Gala Anual Corporativa",
+    "location": "Hotel JW Marriott Quito",
+    "startDate": "2027-02-20",
+    "endDate": "2027-02-20"
+  },
+  {
+    "id": 6,
+    "name": "Expo Agroindustria Sierra",
+    "location": "Recinto Ferial Caza y Pesca",
+    "startDate": "2027-03-05",
+    "endDate": "2027-03-09"
+  },
+  {
+    "id": 7,
+    "name": "Torneo Deportivo Interuniversitario",
+    "location": "Polideportivo Cumbayá",
+    "startDate": "2027-04-12",
+    "endDate": "2027-04-18"
+  },
+  {
+    "id": 8,
+    "name": "Cumpleaños de 15 Años - Sofía",
+    "location": "Hacienda San José",
+    "startDate": "2027-05-02",
+    "endDate": "2027-05-02"
+  },
+  {
+    "id": 9,
+    "name": "Conferencia de Innovación Digital",
+    "location": "Edificio Las Cámaras",
+    "startDate": "2027-06-11",
+    "endDate": "2027-06-12"
+  },
+  {
+    "id": 10,
+    "name": "Muestra de Arte y Fotografía",
+    "location": "Centro Cultural Metropolitano",
+    "startDate": "2027-07-01",
+    "endDate": "2027-07-10"
   }
 ]

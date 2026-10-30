@@ -11,32 +11,112 @@
   },
   {
     "id": 2,
-    "name": "Silla Plegable Plastica",
+    "name": "Toldo Estructurado 10x12m",
     "category": {
-      "id": 102,
-      "name": "Silleria",
-      "description": "Sillas de resina blanca resistentes"
+      "id": 101,
+      "name": "Toldos y Carpas",
+      "description": "Carpas de gran tamaño reforzadas para intemperie"
     },
-    "totalQuantity": 150
+    "totalQuantity": 5
   },
   {
     "id": 3,
+    "name": "Silla Plegable Plástica",
+    "category": {
+      "id": 102,
+      "name": "Sillería",
+      "description": "Sillas de resina blanca resistentes"
+    },
+    "totalQuantity": 200
+  },
+  {
+    "id": 4,
+    "name": "Silla VIP Tapizada",
+    "category": {
+      "id": 102,
+      "name": "Sillería",
+      "description": "Sillas acolchadas elegantes para galas y banquetes"
+    },
+    "totalQuantity": 100
+  },
+  {
+    "id": 5,
     "name": "Mesa Redonda 10 Puestos",
     "category": {
       "id": 103,
       "name": "Mesas",
-      "description": "Mesas plegables de madera para banquetes"
+      "description": "Mesas de madera plegables para banquetes"
+    },
+    "totalQuantity": 25
+  },
+  {
+    "id": 6,
+    "name": "Mesa Coctelera Alta",
+    "category": {
+      "id": 103,
+      "name": "Mesas",
+      "description": "Mesas altas metálicas tipo bar para recepciones"
+    },
+    "totalQuantity": 30
+  },
+  {
+    "id": 7,
+    "name": "Reflector LED 100W",
+    "category": {
+      "id": 104,
+      "name": "Iluminación",
+      "description": "Focos de iluminación exterior de alta potencia"
     },
     "totalQuantity": 20
   },
   {
-    "id": 4,
-    "name": "Reflector LED 100W",
+    "id": 8,
+    "name": "Guirnalda de Luces Vintage 15m",
     "category": {
       "id": 104,
-      "name": "Iluminacion",
-      "description": "Equipos de iluminacion exterior"
+      "name": "Iluminación",
+      "description": "Luces decorativas estilo cálido para ambientes nocturnos"
+    },
+    "totalQuantity": 40
+  },
+  {
+    "id": 9,
+    "name": "Tarima Modular 4x3m",
+    "category": {
+      "id": 105,
+      "name": "Escenarios",
+      "description": "Módulos de aluminio antideslizante con altura regulable"
+    },
+    "totalQuantity": 8
+  },
+  {
+    "id": 10,
+    "name": "Sistema de Sonido Activo 1500W",
+    "category": {
+      "id": 106,
+      "name": "Audio y Sonido",
+      "description": "Parlantes profesionales con trípodes y mezclador"
+    },
+    "totalQuantity": 12
+  },
+  {
+    "id": 11,
+    "name": "Torre Calefactora a Gas",
+    "category": {
+      "id": 107,
+      "name": "Climatización",
+      "description": "Calentadores tipo pirámide para jardines y terrazas"
     },
     "totalQuantity": 15
+  },
+  {
+    "id": 12,
+    "name": "Vajilla Completa 50 Piezas",
+    "category": {
+      "id": 108,
+      "name": "Catering y Mantelería",
+      "description": "Platos de porcelana, copas y cubiertos de acero"
+    },
+    "totalQuantity": 50
   }
 ]
