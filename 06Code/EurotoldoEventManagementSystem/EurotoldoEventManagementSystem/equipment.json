@@ -7,7 +7,10 @@
       "name": "Toldos y Carpas",
       "description": "Toldos impermeables para eventos al aire libre"
     },
-    "totalQuantity": 10
+    "rentalPrice": 0.0,
+    "totalQuantity": 10,
+    "availableQuantity": 10,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 2,
@@ -17,7 +20,10 @@
       "name": "Toldos y Carpas",
       "description": "Carpas de gran tamaño reforzadas para intemperie"
     },
-    "totalQuantity": 5
+    "rentalPrice": 0.0,
+    "totalQuantity": 5,
+    "availableQuantity": 5,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 3,
@@ -27,7 +33,10 @@
       "name": "Sillería",
       "description": "Sillas de resina blanca resistentes"
     },
-    "totalQuantity": 200
+    "rentalPrice": 0.0,
+    "totalQuantity": 200,
+    "availableQuantity": 200,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 4,
@@ -37,7 +46,10 @@
       "name": "Sillería",
       "description": "Sillas acolchadas elegantes para galas y banquetes"
     },
-    "totalQuantity": 100
+    "rentalPrice": 0.0,
+    "totalQuantity": 100,
+    "availableQuantity": 100,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 5,
@@ -47,7 +59,10 @@
       "name": "Mesas",
       "description": "Mesas de madera plegables para banquetes"
     },
-    "totalQuantity": 25
+    "rentalPrice": 0.0,
+    "totalQuantity": 25,
+    "availableQuantity": 25,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 6,
@@ -57,7 +72,10 @@
       "name": "Mesas",
       "description": "Mesas altas metálicas tipo bar para recepciones"
     },
-    "totalQuantity": 30
+    "rentalPrice": 0.0,
+    "totalQuantity": 30,
+    "availableQuantity": 30,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 7,
@@ -67,7 +85,10 @@
       "name": "Iluminación",
       "description": "Focos de iluminación exterior de alta potencia"
     },
-    "totalQuantity": 20
+    "rentalPrice": 0.0,
+    "totalQuantity": 20,
+    "availableQuantity": 20,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 8,
@@ -77,7 +98,10 @@
       "name": "Iluminación",
       "description": "Luces decorativas estilo cálido para ambientes nocturnos"
     },
-    "totalQuantity": 40
+    "rentalPrice": 0.0,
+    "totalQuantity": 40,
+    "availableQuantity": 40,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 9,
@@ -87,7 +111,10 @@
       "name": "Escenarios",
       "description": "Módulos de aluminio antideslizante con altura regulable"
     },
-    "totalQuantity": 8
+    "rentalPrice": 0.0,
+    "totalQuantity": 8,
+    "availableQuantity": 8,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 10,
@@ -97,7 +124,10 @@
       "name": "Audio y Sonido",
       "description": "Parlantes profesionales con trípodes y mezclador"
     },
-    "totalQuantity": 12
+    "rentalPrice": 0.0,
+    "totalQuantity": 12,
+    "availableQuantity": 12,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 11,
@@ -107,7 +137,10 @@
       "name": "Climatización",
       "description": "Calentadores tipo pirámide para jardines y terrazas"
     },
-    "totalQuantity": 15
+    "rentalPrice": 0.0,
+    "totalQuantity": 15,
+    "availableQuantity": 15,
+    "equipmentType": "General Equipment"
   },
   {
     "id": 12,
@@ -117,6 +150,24 @@
       "name": "Catering y Mantelería",
       "description": "Platos de porcelana, copas y cubiertos de acero"
     },
-    "totalQuantity": 50
+    "rentalPrice": 0.0,
+    "totalQuantity": 50,
+    "availableQuantity": 50,
+    "equipmentType": "General Equipment"
+  },
+  {
+    "size": "Large",
+    "capacity": 80,
+    "id": 100,
+    "name": "Test Ten",
+    "category": {
+      "id": 1,
+      "name": "Tents",
+      "description": "Event tents"
+    },
+    "rentalPrice": 50.0,
+    "totalQuantity": 3,
+    "availableQuantity": 3,
+    "equipmentType": "Tent"
   }
 ]

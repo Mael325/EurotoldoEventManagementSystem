@@ -1,17 +1,18 @@
 package ec.edu.espe.eurotoldo.controller;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import ec.edu.espe.eurotoldo.model.Equipment;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-
-import com.google.gson.JsonParseException;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,19 +20,36 @@ import java.nio.file.NoSuchFileException;
  */
 public class EquipmentFileManager {
 
-    public boolean saveEquipment(ArrayList<Equipment> equipmentList) {
+    private final Path filePath
+            = Path.of("equipment.json");
+
+    private final Gson gson
+            = GsonFactory.createGson();
+
+    private final EquipmentJsonConverter converter
+            = new EquipmentJsonConverter(gson);
+
+    public boolean saveEquipment(
+            ArrayList<Equipment> equipmentList) {
 
         if (equipmentList == null) {
             return false;
         }
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(equipmentList);
+        JsonArray equipmentArray = new JsonArray();
+
+        for (Equipment equipment : equipmentList) {
+
+            equipmentArray.add(
+                    converter.equipmentToJson(equipment)
+            );
+        }
 
         try {
-            Files.write(
-                    Paths.get("equipment.json"),
-                    json.getBytes(StandardCharsets.UTF_8)
+            Files.writeString(
+                    filePath,
+                    gson.toJson(equipmentArray),
+                    StandardCharsets.UTF_8
             );
 
             return true;
@@ -44,17 +62,29 @@ public class EquipmentFileManager {
     public ArrayList<Equipment> loadEquipment() {
 
         try {
-            String json = new String(
-                    Files.readAllBytes(Paths.get("equipment.json")),
+            String json = Files.readString(
+                    filePath,
                     StandardCharsets.UTF_8
             );
 
-            Gson gson = new Gson();
-            ArrayList<Equipment> equipmentList = gson.fromJson(json,
-                    new TypeToken<ArrayList<Equipment>>() {}.getType());
+            JsonArray equipmentArray = JsonParser
+                    .parseString(json)
+                    .getAsJsonArray();
 
-            if (equipmentList == null) {
-                return null;
+            ArrayList<Equipment> equipmentList
+                    = new ArrayList<>();
+
+            for (JsonElement element : equipmentArray) {
+
+                JsonObject equipmentJson
+                        = element.getAsJsonObject();
+
+                Equipment equipment
+                        = converter.equipmentFromJson(
+                                equipmentJson
+                        );
+
+                equipmentList.add(equipment);
             }
 
             return equipmentList;
@@ -62,7 +92,10 @@ public class EquipmentFileManager {
         } catch (NoSuchFileException e) {
             return new ArrayList<>();
 
-        } catch (IOException | JsonParseException e) {
+        } catch (IOException
+                | JsonParseException
+                | IllegalStateException e) {
+
             return null;
         }
     }

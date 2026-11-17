@@ -9,9 +9,38 @@ import java.util.ArrayList;
  */
 public class EventController {
 
-    private final ArrayList<Event> events = new ArrayList<>();
+    private final ArrayList<Event> events;
+    private final EventFileManager fileManager;
+
+    public EventController() {
+        events = new ArrayList<>();
+        fileManager = new EventFileManager();
+    }
+
+    public boolean loadEvents() {
+
+        ArrayList<Event> loadedEvents
+                = fileManager.loadEvents();
+
+        if (loadedEvents == null) {
+            return false;
+        }
+
+        events.clear();
+
+        for (Event event : loadedEvents) {
+
+            if (!addEvent(event)) {
+                events.clear();
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public boolean addEvent(Event event) {
+
         if (!isValid(event)) {
             return false;
         }
@@ -25,7 +54,9 @@ public class EventController {
     }
 
     public Event findEventById(int id) {
+
         for (Event event : events) {
+
             if (event.getId() == id) {
                 return event;
             }
@@ -35,43 +66,111 @@ public class EventController {
     }
 
     public boolean updateEvent(Event event) {
+
         if (!isValid(event)) {
             return false;
         }
 
-        Event existingEvent = findEventById(event.getId());
+        Event existingEvent
+                = findEventById(event.getId());
 
         if (existingEvent == null) {
             return false;
         }
 
         existingEvent.setName(event.getName());
-        existingEvent.setLocation(event.getLocation());
-        existingEvent.setStartDate(event.getStartDate());
-        existingEvent.setEndDate(event.getEndDate());
+        existingEvent.setEventType(
+                event.getEventType()
+        );
+        existingEvent.setLocation(
+                event.getLocation()
+        );
+        existingEvent.setStartDate(
+                event.getStartDate()
+        );
+        existingEvent.setEndDate(
+                event.getEndDate()
+        );
+        existingEvent.setSetupDateTime(
+                event.getSetupDateTime()
+        );
+        existingEvent.setPickupDateTime(
+                event.getPickupDateTime()
+        );
 
         return true;
+    }
+
+    public boolean markSetupCompleted(int eventId) {
+
+        Event event = findEventById(eventId);
+
+        if (event == null) {
+            return false;
+        }
+
+        event.markSetupCompleted();
+        return true;
+    }
+
+    public boolean markPickupCompleted(int eventId) {
+
+        Event event = findEventById(eventId);
+
+        if (event == null) {
+            return false;
+        }
+
+        try {
+            event.markPickupCompleted();
+            return true;
+
+        } catch (IllegalStateException e) {
+            return false;
+        }
+    }
+
+    public boolean removeEvent(int id) {
+
+        Event event = findEventById(id);
+
+        if (event == null) {
+            return false;
+        }
+
+        return events.remove(event);
     }
 
     public ArrayList<Event> getEvents() {
         return new ArrayList<>(events);
     }
 
+    public boolean saveEvents() {
+        return fileManager.saveEvents(events);
+    }
+
     private boolean isValid(Event event) {
-        if (event == null) {
+
+        if (event == null || event.getId() < 0) {
+            return false;
+        }
+
+        if (event.getName() == null
+                || event.getName().isBlank()) {
+            return false;
+        }
+
+        if (event.getEventType() == null
+                || event.getEventType().isBlank()) {
             return false;
         }
 
         if (event.getLocation() == null
-                || event.getLocation().trim().isEmpty()) {
+                || event.getLocation().isBlank()) {
             return false;
         }
 
-        if (event.getStartDate() == null
-                || event.getEndDate() == null) {
-            return false;
-        }
-
-        return !event.getEndDate().isBefore(event.getStartDate());
+        return event.hasValidDates()
+                && event.hasValidSchedule();
     }
 }
