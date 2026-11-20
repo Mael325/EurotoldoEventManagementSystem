@@ -12,7 +12,14 @@ public class DispatchTest {
 
     @BeforeEach
     public void setUp() {
-        value = new Dispatch(1, new Reservation(1, new Customer(1, "Ana", "0991234567", "ana@example.com", "Quito"), new Event(1, "Feria", "Quito", date, date.plusDays(1)), "Confirmada", date, new ArrayList<>()), new Equipment(1, "Mesa", null, 20), 10, date, new User(1, "Luis", "luis", "test-hash", "Operador", true));
+        value = new Dispatch(
+                1,
+                new Reservation(1, new Customer(1, "Ana", "0991234567", "ana@example.com", "Quito"), new Event(1, "Feria", "Quito", date, date.plusDays(1)), "Confirmada", date, new ArrayList<>()),
+                new Equipment(1, "Mesa", null, 20),
+                10,
+                date,
+                new User(1, "luis", "clave123", "Luis", UserRole.OPERATIONAL_STAFF, true)
+        );
     }
 
     @Test

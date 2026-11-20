@@ -9,7 +9,7 @@ public class UserTest {
 
     @BeforeEach
     public void setUp() {
-        value = new User(1, "Luis", "luis", "test-hash", "Operador", true);
+        value = new User(1, "luis", "clave123", "Luis", UserRole.OPERATIONAL_STAFF, true);
     }
 
     @Test
@@ -31,9 +31,19 @@ public class UserTest {
     }
 
     @Test
-    public void testPasswordHashExcludedFromText() {
-        assertFalse(value.toString().contains("test-hash"));
-        assertFalse(value.toString().contains("passwordHash"));
+    public void testCheckPasswordAndRole() {
+        assertTrue(value.checkPassword("clave123"));
+        assertFalse(value.checkPassword("incorrecta"));
+        assertFalse(value.isAdministrator());
+
+        value.setRole(UserRole.ADMINISTRATOR);
+        assertTrue(value.isAdministrator());
+    }
+
+    @Test
+    public void testPasswordExcludedFromText() {
+        assertFalse(value.toString().contains("clave123"));
+        assertFalse(value.toString().contains("password="));
     }
 
     @Test
@@ -44,9 +54,16 @@ public class UserTest {
     }
 
     @Test
-    public void testNullNameThrowsException() {
+    public void testNullFullNameThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            value.setName(null);
+            value.setFullName(null);
+        });
+    }
+
+    @Test
+    public void testBlankFullNameThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            value.setFullName("   ");
         });
     }
 
@@ -58,23 +75,23 @@ public class UserTest {
     }
 
     @Test
-    public void testNullPasswordHashThrowsException() {
+    public void testNullPasswordThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            value.setPasswordHash(null);
+            value.setPassword(null);
         });
     }
 
     @Test
-    public void testBlankPasswordHashThrowsException() {
+    public void testBlankPasswordThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            value.setPasswordHash("   ");
+            value.setPassword("   ");
         });
     }
 
     @Test
-    public void testBlankRoleThrowsException() {
+    public void testNullRoleThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            value.setRole("   ");
+            value.setRole(null);
         });
     }
 }

@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "username": "Gerente",
+    "password": "123",
+    "fullName": "Juan Jose",
+    "role": "ADMINISTRATOR",
+    "active": true
+  }
+]
