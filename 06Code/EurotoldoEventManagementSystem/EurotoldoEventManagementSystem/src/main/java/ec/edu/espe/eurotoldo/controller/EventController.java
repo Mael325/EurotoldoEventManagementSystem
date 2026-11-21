@@ -5,22 +5,24 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo,
+ * Dylan Cumbajin, MosQ, @ESPE
  */
 public class EventController {
 
     private final ArrayList<Event> events;
-    private final EventFileManager fileManager;
+    private final EventApiClient apiClient;
 
     public EventController() {
+
         events = new ArrayList<>();
-        fileManager = new EventFileManager();
+        apiClient = new EventApiClient();
     }
 
     public boolean loadEvents() {
 
         ArrayList<Event> loadedEvents
-                = fileManager.loadEvents();
+                = apiClient.getEvents();
 
         if (loadedEvents == null) {
             return false;
@@ -30,10 +32,14 @@ public class EventController {
 
         for (Event event : loadedEvents) {
 
-            if (!addEvent(event)) {
+            if (!isValid(event)
+                    || findEventById(event.getId()) != null) {
+
                 events.clear();
                 return false;
             }
+
+            events.add(event);
         }
 
         return true;
@@ -46,6 +52,10 @@ public class EventController {
         }
 
         if (findEventById(event.getId()) != null) {
+            return false;
+        }
+
+        if (!apiClient.addEvent(event)) {
             return false;
         }
 
@@ -75,6 +85,10 @@ public class EventController {
                 = findEventById(event.getId());
 
         if (existingEvent == null) {
+            return false;
+        }
+
+        if (!apiClient.updateEvent(event)) {
             return false;
         }
 
@@ -109,6 +123,10 @@ public class EventController {
             return false;
         }
 
+        if (!apiClient.markSetupCompleted(eventId)) {
+            return false;
+        }
+
         event.markSetupCompleted();
         return true;
     }
@@ -117,7 +135,12 @@ public class EventController {
 
         Event event = findEventById(eventId);
 
-        if (event == null) {
+        if (event == null
+                || !event.isSetupCompleted()) {
+            return false;
+        }
+
+        if (!apiClient.markPickupCompleted(eventId)) {
             return false;
         }
 
@@ -125,7 +148,7 @@ public class EventController {
             event.markPickupCompleted();
             return true;
 
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException exception) {
             return false;
         }
     }
@@ -138,6 +161,10 @@ public class EventController {
             return false;
         }
 
+        if (!apiClient.deleteEvent(id)) {
+            return false;
+        }
+
         return events.remove(event);
     }
 
@@ -145,13 +172,17 @@ public class EventController {
         return new ArrayList<>(events);
     }
 
+    /*
+     * Se conserva temporalmente porque algunas vistas todavía
+     * pueden utilizarlo. La API ya guarda cada cambio.
+     */
     public boolean saveEvents() {
-        return fileManager.saveEvents(events);
+        return true;
     }
 
     private boolean isValid(Event event) {
 
-        if (event == null || event.getId() < 0) {
+        if (event == null || event.getId() <= 0) {
             return false;
         }
 

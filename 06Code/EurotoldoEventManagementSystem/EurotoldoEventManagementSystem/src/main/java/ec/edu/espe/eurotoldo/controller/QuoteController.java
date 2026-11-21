@@ -9,12 +9,13 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo,
+ * Dylan Cumbajin, MosQ, @ESPE
  */
 public class QuoteController {
 
     private final ArrayList<Quote> quotes;
-    private final QuoteFileManager fileManager;
+    private final QuoteApiClient apiClient;
 
     private final CustomerController customerController;
     private final EventController eventController;
@@ -26,7 +27,7 @@ public class QuoteController {
             EquipmentController equipmentController) {
 
         quotes = new ArrayList<>();
-        fileManager = new QuoteFileManager();
+        apiClient = new QuoteApiClient();
 
         this.customerController = customerController;
         this.eventController = eventController;
@@ -36,7 +37,7 @@ public class QuoteController {
     public boolean loadQuotes() {
 
         ArrayList<Quote> loadedQuotes
-                = fileManager.loadQuotes();
+                = apiClient.getQuotes();
 
         if (loadedQuotes == null) {
             return false;
@@ -64,7 +65,7 @@ public class QuoteController {
             int customerId,
             int eventId) {
 
-        if (quoteId < 0
+        if (quoteId <= 0
                 || findQuoteById(quoteId) != null) {
 
             return false;
@@ -84,14 +85,23 @@ public class QuoteController {
             return false;
         }
 
-        Quote quote = new Quote(
-                quoteId,
-                customer,
-                event
-        );
+        try {
+            Quote quote = new Quote(
+                    quoteId,
+                    customer,
+                    event
+            );
 
-        quotes.add(quote);
-        return true;
+            if (!apiClient.addQuote(quote)) {
+                return false;
+            }
+
+            quotes.add(quote);
+            return true;
+
+        } catch (IllegalArgumentException exception) {
+            return false;
+        }
     }
 
     public Quote findQuoteById(int id) {
@@ -114,7 +124,11 @@ public class QuoteController {
 
         Quote quote = findQuoteById(quoteId);
 
-        if (quote == null || quote.isApproved()) {
+        if (quote == null
+                || quote.isApproved()
+                || assignmentId <= 0
+                || quantity <= 0) {
+
             return false;
         }
 
@@ -136,9 +150,19 @@ public class QuoteController {
                     quantity
             );
 
-            return quote.addAssignment(assignment);
+            if (!quote.addAssignment(assignment)) {
+                return false;
+            }
 
-        } catch (IllegalArgumentException e) {
+            if (!apiClient.updateQuote(quote)) {
+
+                quote.removeAssignment(assignmentId);
+                return false;
+            }
+
+            return true;
+
+        } catch (IllegalArgumentException exception) {
             return false;
         }
     }
@@ -153,14 +177,37 @@ public class QuoteController {
             return false;
         }
 
-        return quote.removeAssignment(assignmentId);
+        Assignment assignment
+                = quote.findAssignmentById(
+                        assignmentId
+                );
+
+        if (assignment == null) {
+            return false;
+        }
+
+        if (!quote.removeAssignment(assignmentId)) {
+            return false;
+        }
+
+        if (!apiClient.updateQuote(quote)) {
+
+            quote.addAssignment(assignment);
+            return false;
+        }
+
+        return true;
     }
 
     public boolean approveQuote(int quoteId) {
 
         Quote quote = findQuoteById(quoteId);
 
-        if (quote == null || quote.isApproved()) {
+        if (quote == null
+                || quote.isApproved()
+                || quote.getAssignments().isEmpty()
+                || quote.calculateTotal() <= 0) {
+
             return false;
         }
 
@@ -180,6 +227,10 @@ public class QuoteController {
             }
         }
 
+        if (!apiClient.approveQuote(quoteId)) {
+            return false;
+        }
+
         return quote.approve();
     }
 
@@ -191,6 +242,10 @@ public class QuoteController {
             return false;
         }
 
+        if (!apiClient.deleteQuote(quoteId)) {
+            return false;
+        }
+
         return quotes.remove(quote);
     }
 
@@ -198,14 +253,19 @@ public class QuoteController {
         return new ArrayList<>(quotes);
     }
 
+    /*
+     * Se conserva para mantener compatibilidad con
+     * otras clases. Los cambios ya se guardan mediante
+     * la API cuando se realiza cada operación.
+     */
     public boolean saveQuotes() {
-        return fileManager.saveQuotes(quotes);
+        return true;
     }
 
     private boolean isValid(Quote quote) {
 
         if (quote == null
-                || quote.getId() < 0
+                || quote.getId() <= 0
                 || quote.getCustomer() == null
                 || quote.getEvent() == null
                 || quote.getAssignments() == null) {
@@ -214,6 +274,7 @@ public class QuoteController {
         }
 
         if (quote.isApproved()) {
+
             return !quote.getAssignments().isEmpty()
                     && quote.calculateTotal() > 0;
         }

@@ -5,22 +5,23 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo,
+ * Dylan Cumbajin, MosQ, @ESPE
  */
 public class CustomerController {
 
     private final ArrayList<Customer> customers;
-    private final CustomerFileManager fileManager;
+    private final CustomerApiClient apiClient;
 
     public CustomerController() {
         customers = new ArrayList<>();
-        fileManager = new CustomerFileManager();
+        apiClient = new CustomerApiClient();
     }
 
     public boolean loadCustomers() {
 
         ArrayList<Customer> loadedCustomers
-                = fileManager.loadCustomers();
+                = apiClient.getCustomers();
 
         if (loadedCustomers == null) {
             return false;
@@ -30,10 +31,14 @@ public class CustomerController {
 
         for (Customer customer : loadedCustomers) {
 
-            if (!addCustomer(customer)) {
+            if (!isValid(customer)
+                    || findCustomerById(customer.getId()) != null) {
+
                 customers.clear();
                 return false;
             }
+
+            customers.add(customer);
         }
 
         return true;
@@ -46,6 +51,10 @@ public class CustomerController {
         }
 
         if (findCustomerById(customer.getId()) != null) {
+            return false;
+        }
+
+        if (!apiClient.addCustomer(customer)) {
             return false;
         }
 
@@ -78,6 +87,10 @@ public class CustomerController {
             return false;
         }
 
+        if (!apiClient.updateCustomer(customer)) {
+            return false;
+        }
+
         existingCustomer.setName(customer.getName());
         existingCustomer.setPhone(customer.getPhone());
         existingCustomer.setEmail(customer.getEmail());
@@ -94,6 +107,10 @@ public class CustomerController {
             return false;
         }
 
+        if (!apiClient.deleteCustomer(id)) {
+            return false;
+        }
+
         return customers.remove(customer);
     }
 
@@ -101,14 +118,17 @@ public class CustomerController {
         return new ArrayList<>(customers);
     }
 
+    /*
+     * Se conserva temporalmente porque CustomerView todavía
+     * utiliza este método. Los cambios ya son guardados por la API.
+     */
     public boolean saveCustomers() {
-
-        return fileManager.saveCustomers(customers);
+        return true;
     }
 
     private boolean isValid(Customer customer) {
 
-        if (customer == null || customer.getId() < 0) {
+        if (customer == null || customer.getId() <= 0) {
             return false;
         }
 
@@ -123,6 +143,7 @@ public class CustomerController {
         }
 
         if (customer.getEmail() == null
+                || customer.getEmail().isBlank()
                 || !customer.getEmail().contains("@")) {
             return false;
         }

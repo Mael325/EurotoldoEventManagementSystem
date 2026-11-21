@@ -9,12 +9,13 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo,
+ * Dylan Cumbajin, MosQ, @ESPE
  */
 public class ReservationController {
 
     private final ArrayList<Reservation> reservations;
-    private final ReservationFileManager fileManager;
+    private final ReservationApiClient apiClient;
 
     private final QuoteController quoteController;
     private final EquipmentController equipmentController;
@@ -24,7 +25,7 @@ public class ReservationController {
             EquipmentController equipmentController) {
 
         reservations = new ArrayList<>();
-        fileManager = new ReservationFileManager();
+        apiClient = new ReservationApiClient();
 
         this.quoteController = quoteController;
         this.equipmentController = equipmentController;
@@ -33,7 +34,7 @@ public class ReservationController {
     public boolean loadReservations() {
 
         ArrayList<Reservation> loadedReservations
-                = fileManager.loadReservations();
+                = apiClient.getReservations();
 
         if (loadedReservations == null) {
             return false;
@@ -61,7 +62,8 @@ public class ReservationController {
     public boolean createReservationFromQuote(
             int quoteId) {
 
-        if (findReservationById(quoteId) != null) {
+        if (quoteId <= 0
+                || findReservationById(quoteId) != null) {
             return false;
         }
 
@@ -89,16 +91,19 @@ public class ReservationController {
         }
 
         try {
-            Reservation reservation
-                    = new Reservation(
-                            quoteId,
-                            quote
-                    );
+            Reservation reservation = new Reservation(
+                    quoteId,
+                    quote
+            );
+
+            if (!apiClient.addReservation(reservation)) {
+                return false;
+            }
 
             reservations.add(reservation);
             return true;
 
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException exception) {
             return false;
         }
     }
@@ -173,8 +178,8 @@ public class ReservationController {
                 if (assignment.getEquipment().getId()
                         == equipmentId) {
 
-                    reservedQuantity +=
-                            assignment.getQuantity();
+                    reservedQuantity
+                            += assignment.getQuantity();
                 }
             }
         }
@@ -187,7 +192,16 @@ public class ReservationController {
         Reservation reservation
                 = findReservationById(id);
 
-        if (reservation == null) {
+        if (reservation == null
+                || Reservation.CANCELLED.equals(
+                        reservation.getStatus())
+                || Reservation.COMPLETED.equals(
+                        reservation.getStatus())) {
+
+            return false;
+        }
+
+        if (!apiClient.cancelReservation(id)) {
             return false;
         }
 
@@ -199,7 +213,14 @@ public class ReservationController {
         Reservation reservation
                 = findReservationById(id);
 
-        if (reservation == null) {
+        if (reservation == null
+                || !Reservation.CONFIRMED.equals(
+                        reservation.getStatus())) {
+
+            return false;
+        }
+
+        if (!apiClient.completeReservation(id)) {
             return false;
         }
 
@@ -218,6 +239,10 @@ public class ReservationController {
             return false;
         }
 
+        if (!apiClient.deleteReservation(id)) {
+            return false;
+        }
+
         return reservations.remove(reservation);
     }
 
@@ -225,11 +250,12 @@ public class ReservationController {
         return new ArrayList<>(reservations);
     }
 
+    /*
+     * Se conserva temporalmente para mantener compatibilidad
+     * con las vistas anteriores. La API guarda cada cambio.
+     */
     public boolean saveReservations() {
-
-        return fileManager.saveReservations(
-                reservations
-        );
+        return true;
     }
 
     private boolean datesOverlap(
@@ -254,16 +280,24 @@ public class ReservationController {
     private boolean isValid(
             Reservation reservation) {
 
-        return reservation != null
-                && reservation.getId() >= 0
-                && reservation.getCustomer() != null
-                && reservation.getEvent() != null
-                && reservation.getEvent().hasValidDates()
-                && reservation.getStatus() != null
-                && !reservation.getStatus().isBlank()
-                && reservation.getReservationDate() != null
-                && reservation.getAssignments() != null
-                && !reservation.getAssignments().isEmpty()
-                && reservation.getTotalAmount() > 0;
+        if (reservation == null
+                || reservation.getId() <= 0
+                || reservation.getCustomer() == null
+                || reservation.getEvent() == null
+                || !reservation.getEvent().hasValidDates()
+                || reservation.getReservationDate() == null
+                || reservation.getAssignments() == null
+                || reservation.getAssignments().isEmpty()
+                || reservation.getTotalAmount() <= 0) {
+
+            return false;
+        }
+
+        String status = reservation.getStatus();
+
+        return Reservation.PENDING.equals(status)
+                || Reservation.CONFIRMED.equals(status)
+                || Reservation.CANCELLED.equals(status)
+                || Reservation.COMPLETED.equals(status);
     }
 }

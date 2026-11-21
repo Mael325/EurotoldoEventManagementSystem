@@ -5,7 +5,8 @@ import ec.edu.espe.eurotoldo.model.Customer;
 
 /**
  *
- * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo,
+ * Dylan Cumbajin, MosQ, @ESPE
  */
 public class CustomerView {
 
@@ -22,78 +23,74 @@ public class CustomerView {
 
     public void registerCustomer() {
 
-        int id = input.readInt("Customer ID: ");
+        int id = input.readInt("ID del cliente: ");
+
+        if (id <= 0) {
+            System.out.println(
+                    "El ID debe ser mayor que cero.");
+            return;
+        }
 
         if (controller.findCustomerById(id) != null) {
             System.out.println(
-                    "A customer with that ID already exists.");
+                    "Ya existe un cliente con ese ID.");
             return;
         }
 
         try {
             Customer customer = readCustomerData(id);
 
-            if (!controller.addCustomer(customer)) {
+            if (controller.addCustomer(customer)) {
                 System.out.println(
-                        "The customer could not be registered.");
-                return;
-            }
-
-            if (controller.saveCustomers()) {
-                System.out.println(
-                        "Customer registered successfully.");
+                        "Cliente registrado correctamente.");
             } else {
                 System.out.println(
-                        "The customer was registered, "
-                        + "but could not be saved.");
+                        "No se pudo registrar el cliente. "
+                        + "Verifique la conexión con la API.");
             }
 
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 
     public void updateCustomer() {
 
-        int id = input.readInt("Customer ID: ");
+        int id = input.readInt("ID del cliente: ");
 
         if (controller.findCustomerById(id) == null) {
             System.out.println(
-                    "The customer was not found.");
+                    "No se encontró el cliente.");
             return;
         }
 
         try {
             Customer customer = readCustomerData(id);
 
-            if (!controller.updateCustomer(customer)) {
+            if (controller.updateCustomer(customer)) {
                 System.out.println(
-                        "The customer could not be updated.");
-                return;
-            }
-
-            if (controller.saveCustomers()) {
-                System.out.println(
-                        "Customer updated successfully.");
+                        "Cliente actualizado correctamente.");
             } else {
                 System.out.println(
-                        "The customer was updated, "
-                        + "but could not be saved.");
+                        "No se pudo actualizar el cliente. "
+                        + "Verifique la conexión con la API.");
             }
 
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 
     public void findCustomer() {
 
-        int id = input.readInt("Customer ID: ");
-        Customer customer = controller.findCustomerById(id);
+        int id = input.readInt("ID del cliente: ");
+
+        Customer customer
+                = controller.findCustomerById(id);
 
         if (customer == null) {
             System.out.println(
-                    "The customer was not found.");
+                    "No se encontró el cliente.");
             return;
         }
 
@@ -102,83 +99,81 @@ public class CustomerView {
 
     public void removeCustomer() {
 
-        int id = input.readInt("Customer ID: ");
+        int id = input.readInt("ID del cliente: ");
 
-        if (!controller.removeCustomer(id)) {
+        if (controller.findCustomerById(id) == null) {
             System.out.println(
-                    "The customer was not found.");
+                    "No se encontró el cliente.");
             return;
         }
 
-        if (controller.saveCustomers()) {
+        if (controller.removeCustomer(id)) {
             System.out.println(
-                    "Customer removed successfully.");
+                    "Cliente eliminado correctamente.");
         } else {
             System.out.println(
-                    "The customer was removed, "
-                    + "but the changes could not be saved.");
+                    "No se pudo eliminar el cliente. "
+                    + "Verifique la conexión con la API.");
         }
     }
 
-    
     public void showCustomers() {
 
-    if (controller.getCustomers().isEmpty()) {
-        System.out.println(
-                "There are no registered customers.");
-        return;
-    }
+        if (controller.getCustomers().isEmpty()) {
+            System.out.println(
+                    "No existen clientes registrados.");
+            return;
+        }
 
-    String border = "+------+"
-            + "----------------------+"
-            + "-----------------+"
-            + "--------------------------+"
-            + "------------------+";
+        String border = "+------+"
+                + "----------------------+"
+                + "-----------------+"
+                + "--------------------------+"
+                + "------------------+";
 
-    System.out.println("\nREGISTERED CUSTOMERS");
-    System.out.println(border);
-
-    System.out.printf(
-            "| %-4s | %-20s | %-15s | %-24s | %-16s |%n",
-            "ID",
-            "Name",
-            "Phone",
-            "Email",
-            "City"
-    );
-
-    System.out.println(border);
-
-    for (Customer customer
-            : controller.getCustomers()) {
+        System.out.println("\nCLIENTES REGISTRADOS");
+        System.out.println(border);
 
         System.out.printf(
-                "| %-4d | %-20s | %-15s | %-24s | %-16s |%n",
-                customer.getId(),
-                customer.getName(),
-                customer.getPhone(),
-                customer.getEmail(),
-                customer.getCity()
+                "| %-4s | %-20s | %-15s | %-24s | %-16s |%n",
+                "ID",
+                "Nombre",
+                "Teléfono",
+                "Correo",
+                "Ciudad"
         );
-    }
 
-    System.out.println(border);
-}
-    
+        System.out.println(border);
+
+        for (Customer customer
+                : controller.getCustomers()) {
+
+            System.out.printf(
+                    "| %-4d | %-20s | %-15s | %-24s | %-16s |%n",
+                    customer.getId(),
+                    customer.getName(),
+                    customer.getPhone(),
+                    customer.getEmail(),
+                    customer.getCity()
+            );
+        }
+
+        System.out.println(border);
+    }
 
     private Customer readCustomerData(int id) {
 
         String name = input.readRequiredText(
-                "Customer name: ");
+                "Nombre del cliente: ");
 
         String phone = input.readRequiredText(
-                "Customer phone: ");
+                "Teléfono del cliente: ");
 
         String email = input.readRequiredText(
-                "Customer email: ");
+                "Correo del cliente: ");
 
         String city = input.readRequiredText(
-                "Customer city: ");
+                "Ciudad del cliente: ");
 
         return new Customer(
                 id,
@@ -192,15 +187,15 @@ public class CustomerView {
     private void showCustomerInformation(
             Customer customer) {
 
-        System.out.println("\nCUSTOMER INFORMATION");
+        System.out.println("\nINFORMACIÓN DEL CLIENTE");
         System.out.println("ID: " + customer.getId());
         System.out.println(
-                "Name: " + customer.getName());
+                "Nombre: " + customer.getName());
         System.out.println(
-                "Phone: " + customer.getPhone());
+                "Teléfono: " + customer.getPhone());
         System.out.println(
-                "Email: " + customer.getEmail());
+                "Correo: " + customer.getEmail());
         System.out.println(
-                "City: " + customer.getCity());
+                "Ciudad: " + customer.getCity());
     }
 }

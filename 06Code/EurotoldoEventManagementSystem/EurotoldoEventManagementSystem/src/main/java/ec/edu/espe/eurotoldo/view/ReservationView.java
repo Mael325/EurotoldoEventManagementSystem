@@ -6,7 +6,8 @@ import ec.edu.espe.eurotoldo.model.Reservation;
 
 /**
  *
- * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo,
+ * Dylan Cumbajin, MosQ, @ESPE
  */
 public class ReservationView {
 
@@ -100,75 +101,28 @@ public class ReservationView {
         int quoteId = input.readInt(
                 "Código de la cotización aprobada: ");
 
+        if (quoteId <= 0) {
+            System.out.println(
+                    "El código debe ser mayor que cero.");
+            return;
+        }
+
         if (!controller.createReservationFromQuote(
                 quoteId)) {
 
             System.out.println(
                     "No se pudo crear la reserva.");
+
             System.out.println(
-                    "Compruebe la cotización "
-                    + "y la disponibilidad.");
+                    "Compruebe que la cotización esté "
+                    + "aprobada, que exista disponibilidad "
+                    + "y que la API esté funcionando.");
+
             return;
         }
 
-        saveChanges(
-                "Reserva creada correctamente."
-        );
-    }
-
-    private void cancelReservation() {
-
-        int reservationId = input.readInt(
-                "Código de la reserva: ");
-
-        if (!controller.cancelReservation(
-                reservationId)) {
-
-            System.out.println(
-                    "No se pudo cancelar la reserva.");
-            return;
-        }
-
-        saveChanges(
-                "Reserva cancelada correctamente."
-        );
-    }
-
-    private void completeReservation() {
-
-        int reservationId = input.readInt(
-                "Código de la reserva: ");
-
-        if (!controller.completeReservation(
-                reservationId)) {
-
-            System.out.println(
-                    "No se pudo completar la reserva.");
-            return;
-        }
-
-        saveChanges(
-                "Reserva completada correctamente."
-        );
-    }
-
-    private void removeReservation() {
-
-        int reservationId = input.readInt(
-                "Código de la reserva: ");
-
-        if (!controller.removeReservation(
-                reservationId)) {
-
-            System.out.println(
-                    "Solo se pueden eliminar "
-                    + "reservas canceladas.");
-            return;
-        }
-
-        saveChanges(
-                "Reserva eliminada correctamente."
-        );
+        System.out.println(
+                "Reserva creada correctamente.");
     }
 
     private void showReservations() {
@@ -239,6 +193,126 @@ public class ReservationView {
         }
 
         showReservationInformation(reservation);
+    }
+
+    private void cancelReservation() {
+
+        int reservationId = input.readInt(
+                "Código de la reserva: ");
+
+        Reservation reservation
+                = controller.findReservationById(
+                        reservationId
+                );
+
+        if (reservation == null) {
+            System.out.println(
+                    "La reserva no fue encontrada.");
+            return;
+        }
+
+        if (Reservation.CANCELLED.equals(
+                reservation.getStatus())
+                || Reservation.COMPLETED.equals(
+                        reservation.getStatus())) {
+
+            System.out.println(
+                    "La reserva ya no puede cancelarse.");
+            return;
+        }
+
+        if (!controller.cancelReservation(
+                reservationId)) {
+
+            System.out.println(
+                    "No se pudo cancelar la reserva. "
+                    + "Verifique la conexión con la API.");
+
+            return;
+        }
+
+        System.out.println(
+                "Reserva cancelada correctamente.");
+    }
+
+    private void completeReservation() {
+
+        int reservationId = input.readInt(
+                "Código de la reserva: ");
+
+        Reservation reservation
+                = controller.findReservationById(
+                        reservationId
+                );
+
+        if (reservation == null) {
+            System.out.println(
+                    "La reserva no fue encontrada.");
+            return;
+        }
+
+        if (!Reservation.CONFIRMED.equals(
+                reservation.getStatus())) {
+
+            System.out.println(
+                    "Solo puede completarse una "
+                    + "reserva confirmada.");
+
+            return;
+        }
+
+        if (!controller.completeReservation(
+                reservationId)) {
+
+            System.out.println(
+                    "No se pudo completar la reserva. "
+                    + "Verifique la conexión con la API.");
+
+            return;
+        }
+
+        System.out.println(
+                "Reserva completada correctamente.");
+    }
+
+    private void removeReservation() {
+
+        int reservationId = input.readInt(
+                "Código de la reserva: ");
+
+        Reservation reservation
+                = controller.findReservationById(
+                        reservationId
+                );
+
+        if (reservation == null) {
+            System.out.println(
+                    "La reserva no fue encontrada.");
+            return;
+        }
+
+        if (!Reservation.CANCELLED.equals(
+                reservation.getStatus())) {
+
+            System.out.println(
+                    "Solo pueden eliminarse "
+                    + "reservas canceladas.");
+
+            return;
+        }
+
+        if (!controller.removeReservation(
+                reservationId)) {
+
+            System.out.println(
+                    "No se pudo eliminar la reserva. "
+                    + "Verifique la conexión con la API.");
+
+            return;
+        }
+
+        System.out.println(
+                "Reserva eliminada correctamente.");
     }
 
     private void showReservationInformation(
@@ -350,16 +424,5 @@ public class ReservationView {
         }
 
         return "Pendiente";
-    }
-
-    private void saveChanges(String successMessage) {
-
-        if (controller.saveReservations()) {
-            System.out.println(successMessage);
-        } else {
-            System.out.println(
-                    "El cambio se realizó, "
-                    + "pero no pudo guardarse.");
-        }
     }
 }

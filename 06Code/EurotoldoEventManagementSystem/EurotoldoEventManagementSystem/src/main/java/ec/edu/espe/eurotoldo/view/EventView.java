@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo,
+ * Dylan Cumbajin, MosQ, @ESPE
  */
 public class EventView {
 
@@ -24,78 +25,73 @@ public class EventView {
 
     public void registerEvent() {
 
-        int id = input.readInt("Event ID: ");
+        int id = input.readInt("ID del evento: ");
+
+        if (id <= 0) {
+            System.out.println(
+                    "El ID debe ser mayor que cero.");
+            return;
+        }
 
         if (controller.findEventById(id) != null) {
             System.out.println(
-                    "An event with that ID already exists.");
+                    "Ya existe un evento con ese ID.");
             return;
         }
 
         try {
             Event event = readEventData(id);
 
-            if (!controller.addEvent(event)) {
+            if (controller.addEvent(event)) {
                 System.out.println(
-                        "The event information is invalid.");
-                return;
-            }
-
-            if (controller.saveEvents()) {
-                System.out.println(
-                        "Event registered successfully.");
+                        "Evento registrado correctamente.");
             } else {
                 System.out.println(
-                        "The event was registered, "
-                        + "but could not be saved.");
+                        "No se pudo registrar el evento. "
+                        + "Verifique los datos y la conexión.");
             }
 
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 
     public void updateEvent() {
 
-        int id = input.readInt("Event ID: ");
+        int id = input.readInt("ID del evento: ");
 
         if (controller.findEventById(id) == null) {
             System.out.println(
-                    "The event was not found.");
+                    "No se encontró el evento.");
             return;
         }
 
         try {
             Event event = readEventData(id);
 
-            if (!controller.updateEvent(event)) {
+            if (controller.updateEvent(event)) {
                 System.out.println(
-                        "The event information is invalid.");
-                return;
-            }
-
-            if (controller.saveEvents()) {
-                System.out.println(
-                        "Event updated successfully.");
+                        "Evento actualizado correctamente.");
             } else {
                 System.out.println(
-                        "The event was updated, "
-                        + "but could not be saved.");
+                        "No se pudo actualizar el evento. "
+                        + "Verifique los datos y la conexión.");
             }
 
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 
     public void findEvent() {
 
-        int id = input.readInt("Event ID: ");
+        int id = input.readInt("ID del evento: ");
+
         Event event = controller.findEventById(id);
 
         if (event == null) {
             System.out.println(
-                    "The event was not found.");
+                    "No se encontró el evento.");
             return;
         }
 
@@ -104,60 +100,69 @@ public class EventView {
 
     public void removeEvent() {
 
-        int id = input.readInt("Event ID: ");
+        int id = input.readInt("ID del evento: ");
 
-        if (!controller.removeEvent(id)) {
+        if (controller.findEventById(id) == null) {
             System.out.println(
-                    "The event was not found.");
+                    "No se encontró el evento.");
             return;
         }
 
-        if (controller.saveEvents()) {
+        if (controller.removeEvent(id)) {
             System.out.println(
-                    "Event removed successfully.");
+                    "Evento eliminado correctamente.");
         } else {
             System.out.println(
-                    "The event was removed, "
-                    + "but the changes could not be saved.");
+                    "No se pudo eliminar el evento. "
+                    + "Verifique la conexión con la API.");
         }
     }
 
     public void markSetupCompleted() {
 
-        int id = input.readInt("Event ID: ");
+        int id = input.readInt("ID del evento: ");
 
-        if (!controller.markSetupCompleted(id)) {
+        if (controller.findEventById(id) == null) {
             System.out.println(
-                    "The event was not found.");
+                    "No se encontró el evento.");
             return;
         }
 
-        if (controller.saveEvents()) {
+        if (controller.markSetupCompleted(id)) {
             System.out.println(
-                    "Setup marked as completed.");
+                    "Montaje marcado como completado.");
         } else {
             System.out.println(
-                    "The setup status could not be saved.");
+                    "No se pudo actualizar el montaje. "
+                    + "Verifique la conexión con la API.");
         }
     }
 
     public void markPickupCompleted() {
 
-        int id = input.readInt("Event ID: ");
+        int id = input.readInt("ID del evento: ");
 
-        if (!controller.markPickupCompleted(id)) {
+        Event event = controller.findEventById(id);
+
+        if (event == null) {
             System.out.println(
-                    "The event was not found or "
-                    + "the setup is still pending.");
+                    "No se encontró el evento.");
             return;
         }
 
-        if (controller.saveEvents()) {
+        if (!event.isSetupCompleted()) {
             System.out.println(
-                    "Pickup marked as completed.");
+                    "Primero debe completarse el montaje.");
+            return;
+        }
+
+        if (controller.markPickupCompleted(id)) {
+            System.out.println(
+                    "Retiro marcado como completado.");
         } else {
             System.out.println(
-                    "The pickup status could not be saved.");
+                    "No se pudo actualizar el retiro. "
+                    + "Verifique la conexión con la API.");
         }
     }
 
@@ -165,7 +170,7 @@ public class EventView {
 
         if (controller.getEvents().isEmpty()) {
             System.out.println(
-                    "There are no registered events.");
+                    "No existen eventos registrados.");
             return;
         }
 
@@ -176,18 +181,18 @@ public class EventView {
                 + "------------+"
                 + "------------+";
 
-        System.out.println("\nREGISTERED EVENTS");
+        System.out.println("\nEVENTOS REGISTRADOS");
         System.out.println(border);
 
         System.out.printf(
                 "| %-4s | %-18s | %-14s | %-18s "
                 + "| %-10s | %-10s |%n",
                 "ID",
-                "Name",
-                "Type",
-                "Location",
-                "Start",
-                "End"
+                "Nombre",
+                "Tipo",
+                "Lugar",
+                "Inicio",
+                "Fin"
         );
 
         System.out.println(border);
@@ -212,30 +217,30 @@ public class EventView {
     private Event readEventData(int id) {
 
         String name = input.readRequiredText(
-                "Event name: ");
+                "Nombre del evento: ");
 
         String eventType = input.readRequiredText(
-                "Event type: ");
+                "Tipo de evento: ");
 
         String location = input.readRequiredText(
-                "Event location: ");
+                "Lugar del evento: ");
 
         LocalDate startDate = input.readDate(
-                "Start date (YYYY-MM-DD): ");
+                "Fecha de inicio (AAAA-MM-DD): ");
 
         LocalDate endDate = input.readDate(
-                "End date (YYYY-MM-DD): ");
+                "Fecha de fin (AAAA-MM-DD): ");
 
         LocalDateTime setupDateTime
                 = input.readDateTime(
-                        "Setup date and time "
-                        + "(YYYY-MM-DD HH:MM): "
+                        "Fecha y hora del montaje "
+                        + "(AAAA-MM-DD HH:MM): "
                 );
 
         LocalDateTime pickupDateTime
                 = input.readDateTime(
-                        "Pickup date and time "
-                        + "(YYYY-MM-DD HH:MM): "
+                        "Fecha y hora del retiro "
+                        + "(AAAA-MM-DD HH:MM): "
                 );
 
         return new Event(
@@ -252,33 +257,37 @@ public class EventView {
 
     private void showEventInformation(Event event) {
 
-        System.out.println("\nEVENT INFORMATION");
+        System.out.println("\nINFORMACIÓN DEL EVENTO");
         System.out.println("ID: " + event.getId());
         System.out.println(
-                "Name: " + event.getName());
+                "Nombre: " + event.getName());
         System.out.println(
-                "Type: " + event.getEventType());
+                "Tipo: " + event.getEventType());
         System.out.println(
-                "Location: " + event.getLocation());
+                "Lugar: " + event.getLocation());
         System.out.println(
-                "Start date: " + event.getStartDate());
+                "Fecha de inicio: "
+                + event.getStartDate());
         System.out.println(
-                "End date: " + event.getEndDate());
+                "Fecha de fin: "
+                + event.getEndDate());
         System.out.println(
-                "Setup: " + event.getSetupDateTime());
+                "Montaje: "
+                + event.getSetupDateTime());
         System.out.println(
-                "Pickup: " + event.getPickupDateTime());
+                "Retiro: "
+                + event.getPickupDateTime());
 
         System.out.println(
-                "Setup status: "
+                "Estado del montaje: "
                 + (event.isSetupCompleted()
-                        ? "Completed" : "Pending")
+                        ? "Completado" : "Pendiente")
         );
 
         System.out.println(
-                "Pickup status: "
+                "Estado del retiro: "
                 + (event.isPickupCompleted()
-                        ? "Completed" : "Pending")
+                        ? "Completado" : "Pendiente")
         );
     }
 }
