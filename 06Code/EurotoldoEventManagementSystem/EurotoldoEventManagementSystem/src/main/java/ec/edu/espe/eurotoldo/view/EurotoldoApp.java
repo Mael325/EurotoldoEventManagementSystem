@@ -3,6 +3,7 @@ package ec.edu.espe.eurotoldo.view;
 import ec.edu.espe.eurotoldo.controller.CustomerController;
 import ec.edu.espe.eurotoldo.controller.EquipmentController;
 import ec.edu.espe.eurotoldo.controller.EventController;
+import ec.edu.espe.eurotoldo.controller.PaymentController;
 import ec.edu.espe.eurotoldo.controller.QuoteController;
 import ec.edu.espe.eurotoldo.controller.ReservationController;
 import ec.edu.espe.eurotoldo.controller.UserController;
@@ -22,6 +23,7 @@ public class EurotoldoApp {
     private final EventController eventController;
     private final QuoteController quoteController;
     private final ReservationController reservationController;
+    private final PaymentController paymentController;
     private final UserController userController;
 
     private final CustomerView customerView;
@@ -29,6 +31,7 @@ public class EurotoldoApp {
     private final EventView eventView;
     private final QuoteView quoteView;
     private final ReservationView reservationView;
+    private final PaymentView paymentView;
     private final LoginView loginView;
     private final UserView userView;
 
@@ -50,6 +53,10 @@ public class EurotoldoApp {
         reservationController = new ReservationController(
                 quoteController,
                 equipmentController
+        );
+
+        paymentController = new PaymentController(
+                reservationController
         );
 
         customerView = new CustomerView(
@@ -74,6 +81,11 @@ public class EurotoldoApp {
 
         reservationView = new ReservationView(
                 reservationController,
+                input
+        );
+
+        paymentView = new PaymentView(
+                paymentController,
                 input
         );
 
@@ -112,7 +124,7 @@ public class EurotoldoApp {
                 showOperationalMenu();
             }
 
-            option = input.readInt("Seleccione una opcion: ");
+            option = input.readInt("Seleccione una opción: ");
 
             executeOption(option);
 
@@ -145,6 +157,11 @@ public class EurotoldoApp {
 
         if (!reservationController.loadReservations()) {
             System.out.println("Error al cargar reservations.json.");
+            return false;
+        }
+
+        if (!paymentController.loadPayments()) {
+            System.out.println("Error al cargar payments.json.");
             return false;
         }
 
@@ -195,12 +212,16 @@ public class EurotoldoApp {
         System.out.println("|  [16] Gestionar reservas                 |");
         System.out.println("+------------------------------------------+");
 
+        System.out.println("| PAGOS                                    |");
+        System.out.println("|  [17] Gestionar pagos                    |");
+        System.out.println("+------------------------------------------+");
+
         System.out.println("| REPORTES                                 |");
-        System.out.println("|  [17] Exportar reporte de equipos        |");
+        System.out.println("|  [18] Exportar reporte de equipos        |");
         System.out.println("+------------------------------------------+");
 
         System.out.println("| USUARIOS                                 |");
-        System.out.println("|  [18] Gestionar usuarios                 |");
+        System.out.println("|  [19] Gestionar usuarios                 |");
         System.out.println("+------------------------------------------+");
 
         System.out.println("|   [0] Salir                              |");
@@ -240,77 +261,38 @@ public class EurotoldoApp {
 
     private void executeOption(int option) {
 
-        // Bloqueo de seguridad: impide ejecutar opciones restringidas si no es administrador
         if (!loggedUser.isAdministrator()) {
-            if ((option >= 1 && option <= 5) || option == 15 || option == 17 || option == 18) {
+            if ((option >= 1 && option <= 5) || option == 15 || (option >= 17 && option <= 19)) {
                 System.out.println("Acceso denegado: no tiene permisos para realizar esta acción.");
                 return;
             }
         }
 
         switch (option) {
-
-            case 1 ->
-                customerView.registerCustomer();
-
-            case 2 ->
-                customerView.showCustomers();
-
-            case 3 ->
-                customerView.findCustomer();
-
-            case 4 ->
-                customerView.updateCustomer();
-
-            case 5 ->
-                customerView.removeCustomer();
-
-            case 6 ->
-                equipmentView.registerEquipment();
-
-            case 7 ->
-                equipmentView.showEquipment();
-
-            case 8 ->
-                eventView.registerEvent();
-
-            case 9 ->
-                eventView.showEvents();
-
-            case 10 ->
-                eventView.findEvent();
-
-            case 11 ->
-                eventView.updateEvent();
-
-            case 12 ->
-                eventView.removeEvent();
-
-            case 13 ->
-                eventView.markSetupCompleted();
-
-            case 14 ->
-                eventView.markPickupCompleted();
-
-            case 15 ->
-                quoteView.showMenu();
-
-            case 16 ->
-                reservationView.showMenu();
-
-            case 17 ->
-                exportEquipmentReport();
-
-            case 18 ->
-                userView.showMenu();
-
+            case 1 -> customerView.registerCustomer();
+            case 2 -> customerView.showCustomers();
+            case 3 -> customerView.findCustomer();
+            case 4 -> customerView.updateCustomer();
+            case 5 -> customerView.removeCustomer();
+            case 6 -> equipmentView.registerEquipment();
+            case 7 -> equipmentView.showEquipment();
+            case 8 -> eventView.registerEvent();
+            case 9 -> eventView.showEvents();
+            case 10 -> eventView.findEvent();
+            case 11 -> eventView.updateEvent();
+            case 12 -> eventView.removeEvent();
+            case 13 -> eventView.markSetupCompleted();
+            case 14 -> eventView.markPickupCompleted();
+            case 15 -> quoteView.showMenu();
+            case 16 -> reservationView.showMenu();
+            case 17 -> paymentView.showMenu();
+            case 18 -> exportEquipmentReport();
+            case 19 -> userView.showMenu();
             case 0 -> {
                 saveDataBeforeExit();
                 System.out.println("Gracias por utilizar Eurotoldo.");
             }
-
-            default ->
-                System.out.println("Opción inválida. Inténtelo nuevamente.");
+            default -> System.out.println("Opción inválida. Inténtelo nuevamente.");
         }
     }
 
@@ -330,6 +312,7 @@ public class EurotoldoApp {
         boolean eventsSaved = eventController.saveEvents();
         boolean quotesSaved = quoteController.saveQuotes();
         boolean reservationsSaved = reservationController.saveReservations();
+        boolean paymentsSaved = paymentController.savePayments();
         boolean usersSaved = userController.saveUsers();
 
         if (!customersSaved
@@ -337,6 +320,7 @@ public class EurotoldoApp {
                 || !eventsSaved
                 || !quotesSaved
                 || !reservationsSaved
+                || !paymentsSaved
                 || !usersSaved) {
 
             System.out.println("Alguna información no pudo guardarse.");
