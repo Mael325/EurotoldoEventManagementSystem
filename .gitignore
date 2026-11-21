@@ -24,3 +24,6 @@ hs_err_pid*
 replay_pid*
 /06Code/EurotoldoEventManagementSystem/EurotoldoEventManagementSystem/target/
 /06Code/EurotoldoEventManagementSystem/EurotoldoEventManagementSystem/nbproject/
+
+node_modules/
+.env

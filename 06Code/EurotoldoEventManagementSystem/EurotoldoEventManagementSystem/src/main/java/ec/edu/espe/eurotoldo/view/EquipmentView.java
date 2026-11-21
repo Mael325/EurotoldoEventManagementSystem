@@ -10,7 +10,8 @@ import ec.edu.espe.eurotoldo.model.Tent;
 
 /**
  *
- * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo,
+ * Dylan Cumbajin, MosQ, @ESPE
  */
 public class EquipmentView {
 
@@ -27,40 +28,48 @@ public class EquipmentView {
 
     public void registerEquipment() {
 
-        int id = input.readInt("Equipment ID: ");
+        int id = input.readInt("ID del equipo: ");
+
+        if (id <= 0) {
+            System.out.println(
+                    "El ID debe ser mayor que cero.");
+            return;
+        }
 
         if (controller.findEquipmentById(id) != null) {
             System.out.println(
-                    "An equipment item with this ID already exists.");
+                    "Ya existe un equipo con ese ID.");
             return;
         }
 
         showEquipmentTypes();
+
         int equipmentType = input.readInt(
-                "Choose the equipment type: ");
+                "Seleccione el tipo de equipo: ");
 
         if (equipmentType < 1 || equipmentType > 5) {
-            System.out.println("Invalid equipment type.");
+            System.out.println(
+                    "El tipo de equipo no es válido.");
             return;
         }
 
         String name = input.readRequiredText(
-                "Equipment name: ");
+                "Nombre del equipo: ");
 
         int categoryId = input.readInt(
-                "Category ID: ");
+                "ID de la categoría: ");
 
         String categoryName = input.readRequiredText(
-                "Category name: ");
+                "Nombre de la categoría: ");
 
         String categoryDescription = input.readText(
-                "Category description: ");
+                "Descripción de la categoría: ");
 
         double rentalPrice = input.readDouble(
-                "Daily rental price: ");
+                "Precio diario de alquiler: ");
 
         int totalQuantity = input.readInt(
-                "Total quantity: ");
+                "Cantidad total: ");
 
         Category category = new Category(
                 categoryId,
@@ -78,22 +87,17 @@ public class EquipmentView {
                     totalQuantity
             );
 
-            if (!controller.addEquipment(equipment)) {
+            if (controller.addEquipment(equipment)) {
                 System.out.println(
-                        "The equipment could not be registered.");
-                return;
-            }
-
-            if (controller.saveEquipment()) {
-                System.out.println(
-                        "Equipment registered successfully.");
+                        "Equipo registrado correctamente.");
             } else {
                 System.out.println(
-                        "Equipment registered, but it could not be saved.");
+                        "No se pudo registrar el equipo. "
+                        + "Verifique la conexión con la API.");
             }
 
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 
@@ -111,10 +115,10 @@ public class EquipmentView {
 
             case 1:
                 String size = input.readRequiredText(
-                        "Tent size: ");
+                        "Tamaño de la carpa: ");
 
                 int tentCapacity = input.readInt(
-                        "Tent capacity: ");
+                        "Capacidad de la carpa: ");
 
                 equipment = new Tent(
                         id,
@@ -128,11 +132,13 @@ public class EquipmentView {
                 break;
 
             case 2:
-                String chairMaterial = input.readRequiredText(
-                        "Chair material: ");
+                String chairMaterial
+                        = input.readRequiredText(
+                                "Material de la silla: ");
 
-                String chairColor = input.readRequiredText(
-                        "Chair color: ");
+                String chairColor
+                        = input.readRequiredText(
+                                "Color de la silla: ");
 
                 equipment = new Chair(
                         id,
@@ -147,10 +153,10 @@ public class EquipmentView {
 
             case 3:
                 String shape = input.readRequiredText(
-                        "Table shape: ");
+                        "Forma de la mesa: ");
 
                 int tableCapacity = input.readInt(
-                        "Table capacity: ");
+                        "Capacidad de la mesa: ");
 
                 equipment = new Table(
                         id,
@@ -166,10 +172,10 @@ public class EquipmentView {
             case 4:
                 String chandelierMaterial
                         = input.readRequiredText(
-                                "Chandelier material: ");
+                                "Material del candelabro: ");
 
                 int numberOfLights = input.readInt(
-                        "Number of lights: ");
+                        "Número de luces: ");
 
                 equipment = new Chandelier(
                         id,
@@ -200,39 +206,37 @@ public class EquipmentView {
 
         if (controller.getEquipmentList().isEmpty()) {
             System.out.println(
-                    "There is no registered equipment.");
+                    "No existen equipos registrados.");
             return;
         }
 
-        System.out.println("\nREGISTERED EQUIPMENT");
-        System.out.println(
-                "+------+-------------------+"
+        String border
+                = "+------+-------------------+"
                 + "--------------------------+"
                 + "--------------------+"
-                + "------------+---------+-----------+");
+                + "------------+---------+-----------+";
+
+        System.out.println("\nEQUIPOS REGISTRADOS");
+        System.out.println(border);
 
         System.out.printf(
                 "| %-4s | %-17s | %-24s | %-18s "
                 + "| %-10s | %-7s | %-9s |%n",
                 "ID",
-                "Type",
-                "Name",
-                "Category",
-                "Price",
+                "Tipo",
+                "Nombre",
+                "Categoría",
+                "Precio",
                 "Total",
-                "Available"
+                "Disponible"
         );
 
-        System.out.println(
-                "+------+-------------------+"
-                + "--------------------------+"
-                + "--------------------+"
-                + "------------+---------+-----------+");
+        System.out.println(border);
 
         for (Equipment equipment
                 : controller.getEquipmentList()) {
 
-            String categoryName = "No category";
+            String categoryName = "Sin categoría";
 
             if (equipment.getCategory() != null
                     && equipment.getCategory().getName() != null) {
@@ -255,20 +259,16 @@ public class EquipmentView {
             );
         }
 
-        System.out.println(
-                "+------+-------------------+"
-                + "--------------------------+"
-                + "--------------------+"
-                + "------------+---------+-----------+");
+        System.out.println(border);
     }
 
     private void showEquipmentTypes() {
 
-        System.out.println("\nEQUIPMENT TYPES");
-        System.out.println("[1] Tent");
-        System.out.println("[2] Chair");
-        System.out.println("[3] Table");
-        System.out.println("[4] Chandelier");
-        System.out.println("[5] Other equipment");
+        System.out.println("\nTIPOS DE EQUIPO");
+        System.out.println("[1] Carpa");
+        System.out.println("[2] Silla");
+        System.out.println("[3] Mesa");
+        System.out.println("[4] Candelabro");
+        System.out.println("[5] Otro equipo");
     }
 }

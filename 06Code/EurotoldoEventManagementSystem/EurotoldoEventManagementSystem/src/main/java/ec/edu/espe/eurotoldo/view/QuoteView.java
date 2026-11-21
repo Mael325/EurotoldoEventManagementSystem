@@ -6,7 +6,8 @@ import ec.edu.espe.eurotoldo.model.Quote;
 
 /**
  *
- * @author Juan Alvarez, Anthony Arévalo, Dylan Cumbajin, MosQ, @ESPE
+ * @author Juan Alvarez, Anthony Arévalo,
+ * Dylan Cumbajin, MosQ, @ESPE
  */
 public class QuoteView {
 
@@ -124,9 +125,8 @@ public class QuoteView {
             return;
         }
 
-        saveChanges(
-                "Cotización creada correctamente."
-        );
+        System.out.println(
+                "Cotización creada correctamente.");
     }
 
     private void addEquipment() {
@@ -156,9 +156,8 @@ public class QuoteView {
             return;
         }
 
-        saveChanges(
-                "Equipo agregado correctamente."
-        );
+        System.out.println(
+                "Equipo agregado correctamente.");
     }
 
     private void removeEquipment() {
@@ -178,9 +177,8 @@ public class QuoteView {
             return;
         }
 
-        saveChanges(
-                "Equipo eliminado correctamente."
-        );
+        System.out.println(
+                "Equipo eliminado correctamente.");
     }
 
     private void approveQuote() {
@@ -189,6 +187,7 @@ public class QuoteView {
                 "Código de la cotización: ");
 
         if (!controller.approveQuote(quoteId)) {
+
             System.out.println(
                     "No se pudo aprobar la cotización.");
             System.out.println(
@@ -196,9 +195,8 @@ public class QuoteView {
             return;
         }
 
-        saveChanges(
-                "Cotización aprobada correctamente."
-        );
+        System.out.println(
+                "Cotización aprobada correctamente.");
     }
 
     private void removeQuote() {
@@ -207,19 +205,20 @@ public class QuoteView {
                 "Código de la cotización: ");
 
         if (!controller.removeQuote(quoteId)) {
+
             System.out.println(
                     "No se pudo eliminar la cotización.");
             return;
         }
 
-        saveChanges(
-                "Cotización eliminada correctamente."
-        );
+        System.out.println(
+                "Cotización eliminada correctamente.");
     }
 
     private void showQuotes() {
 
         if (controller.getQuotes().isEmpty()) {
+
             System.out.println(
                     "No existen cotizaciones registradas.");
             return;
@@ -277,6 +276,7 @@ public class QuoteView {
         );
 
         if (quote == null) {
+
             System.out.println(
                     "La cotización no fue encontrada.");
             return;
@@ -285,7 +285,8 @@ public class QuoteView {
         showQuoteInformation(quote);
     }
 
-    private void showQuoteInformation(Quote quote) {
+    private void showQuoteInformation(
+            Quote quote) {
 
         System.out.println(
                 "\nINFORMACIÓN DE LA COTIZACIÓN");
@@ -323,15 +324,18 @@ public class QuoteView {
         );
     }
 
-    private void showAssignments(Quote quote) {
+    private void showAssignments(
+            Quote quote) {
 
         if (quote.getAssignments().isEmpty()) {
+
             System.out.println(
                     "La cotización no tiene equipos.");
             return;
         }
 
-        int rentalDays = quote.calculateRentalDays();
+        int rentalDays
+                = quote.calculateRentalDays();
 
         String border = "+------+"
                 + "----------------------+"
@@ -339,11 +343,14 @@ public class QuoteView {
                 + "------------+"
                 + "------------+";
 
-        System.out.println("\nEQUIPOS SOLICITADOS");
+        System.out.println(
+                "\nEQUIPOS SOLICITADOS");
+
         System.out.println(border);
 
         System.out.printf(
-                "| %-4s | %-20s | %-8s | %-10s | %-10s |%n",
+                "| %-4s | %-20s | %-8s "
+                + "| %-10s | %-10s |%n",
                 "ID",
                 "Equipo",
                 "Cantidad",
@@ -371,16 +378,5 @@ public class QuoteView {
         }
 
         System.out.println(border);
-    }
-
-    private void saveChanges(String successMessage) {
-
-        if (controller.saveQuotes()) {
-            System.out.println(successMessage);
-        } else {
-            System.out.println(
-                    "El cambio se realizó, "
-                    + "pero no pudo guardarse.");
-        }
     }
 }
